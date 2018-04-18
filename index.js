@@ -1,9 +1,7 @@
 'use strict';
 const deburr = require('lodash.deburr');
 
-module.exports = string => {
-	const separator = '-';
-
+module.exports = (string, separator = '-') => {
 	string = deburr(string);
 
 	// Decamelize

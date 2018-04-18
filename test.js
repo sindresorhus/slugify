@@ -22,3 +22,10 @@ test('main', t => {
 	t.is(slugify('🦄🦄🦄'), 'unicorn-unicorn-unicorn');
 	t.is(slugify('foo&bar'), 'foo-and-bar');
 });
+
+test('custom separator', t => {
+	t.is(slugify('foo bar', '_'), 'foo_bar');
+	t.is(slugify('BAR&baz', '_'), 'bar_and_baz');
+	t.is(slugify('Déjà Vu!', '-'), 'deja-vu');
+	t.is(slugify('UNICORNS AND RAINBOWS!', '@'), 'unicorns@and@rainbows');
+});
