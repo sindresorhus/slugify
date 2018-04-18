@@ -19,5 +19,6 @@ test('main', t => {
 	t.is(slugify('Déjà Vu!'), 'deja-vu');
 	t.is(slugify('fooBar 123 $#%'), 'foo-bar-123');
 	t.is(slugify('foo🦄'), 'foo-unicorn');
+	t.is(slugify('🦄🦄🦄'), 'unicorn-unicorn-unicorn');
 	t.is(slugify('foo&bar'), 'foo-and-bar');
 });

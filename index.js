@@ -13,9 +13,9 @@ module.exports = string => {
 
 	// Custom replacements
 	string = string
-		.replace(/&/, ' and ')
-		.replace(/🦄/, ' unicorn ')
-		.replace(/♥/, ' love ');
+		.replace(/&/g, ' and ')
+		.replace(/🦄/g, ' unicorn ')
+		.replace(/♥/g, ' love ');
 
 	string = string.toLowerCase();
 
