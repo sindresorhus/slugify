@@ -25,6 +25,9 @@ slugify('  Déjà Vu!  ');
 
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
+
+slugify('BAR and baz', '_');
+//=> 'bar_and_baz'
 ```
 
 
