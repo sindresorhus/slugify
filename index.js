@@ -19,7 +19,7 @@ module.exports = string => {
 
 	string = string.toLowerCase();
 
-	string = string.replace(/[^a-z\d]+/g, '-');
+	string = string.replace(/[^a-z\d]+/g, separator);
 
 	string = string
 		// Remove duplicate separators
