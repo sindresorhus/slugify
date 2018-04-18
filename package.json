@@ -1,0 +1,47 @@
+{
+	"name": "@sindresorhus/slugify",
+	"version": "0.0.0",
+	"description": "Slugify a string",
+	"license": "MIT",
+	"repository": "sindresorhus/slugify",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=6"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"string",
+		"slugify",
+		"slug",
+		"url",
+		"url-safe",
+		"urlify",
+		"transliterate",
+		"transliteration",
+		"deburr",
+		"unicode",
+		"ascii",
+		"text",
+		"decamelize",
+		"pretty",
+		"clean",
+		"filename",
+		"id"
+	],
+	"dependencies": {
+		"lodash.deburr": "^4.1.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"xo": "*"
+	}
+}
