@@ -24,8 +24,9 @@ test('main', t => {
 });
 
 test('custom separator', t => {
-	t.is(slugify('foo bar', '_'), 'foo_bar');
-	t.is(slugify('BAR&baz', '_'), 'bar_and_baz');
-	t.is(slugify('Déjà Vu!', '-'), 'deja-vu');
-	t.is(slugify('UNICORNS AND RAINBOWS!', '@'), 'unicorns@and@rainbows');
+	t.is(slugify('foo bar', {separator: '_'}), 'foo_bar');
+	t.is(slugify('BAR&baz', {separator: '_'}), 'bar_and_baz');
+	t.is(slugify('Déjà Vu!', {separator: '-'}), 'deja-vu');
+	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@'}), 'unicorns@and@rainbows');
+	t.is(slugify('[foo] [bar]', {separator: '.'}), 'foo.bar', 'escape regexp special characters');
 });

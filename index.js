@@ -1,7 +1,14 @@
 'use strict';
 const deburr = require('lodash.deburr');
+const escapeStringRegexp = require('escape-string-regexp');
 
-module.exports = (string, separator = '-') => {
+module.exports = (string, opts) => {
+	opts = Object.assign({separator: '-'}, opts);
+
+	if (opts.separator) {
+		opts.separator = escapeStringRegexp(opts.separator);
+	}
+
 	string = deburr(string);
 
 	// Decamelize
@@ -17,13 +24,15 @@ module.exports = (string, separator = '-') => {
 
 	string = string.toLowerCase();
 
-	string = string.replace(/[^a-z\d]+/g, separator);
+	string = string.replace(/[^a-z\d]+/g, opts.separator);
 
 	string = string
+		// Remove backslash
+		.replace(new RegExp('\\\\', 'g'), '')
 		// Remove duplicate separators
-		.replace(new RegExp(`${separator}{2,}`, 'g'), separator)
+		.replace(new RegExp(`${opts.separator}{2,}`, 'g'), opts.separator)
 		// Remove separator from start and end
-		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '');
+		.replace(new RegExp(`^${opts.separator}|${opts.separator}$`, 'g'), '');
 
 	return string;
 };
