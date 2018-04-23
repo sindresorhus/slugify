@@ -1,31 +1,42 @@
 'use strict';
 const deburr = require('lodash.deburr');
 
-module.exports = string => {
-	const separator = '-';
+const separator = '-';
 
-	string = deburr(string);
+const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
-	// Decamelize
-	string = string
-		.replace(/([a-z\d])([A-Z])/g, `$1 $2`)
-		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, `$1 $2`);
+const curry2 = fn => a1 => a2 => fn(a1, a2);
 
-	// Custom replacements
-	string = string
-		.replace(/&/g, ' and ')
-		.replace(/🦄/g, ' unicorn ')
-		.replace(/♥/g, ' love ');
+const insertSeparator =
+	curry2(
+		(separator, string) => string.replace(/[^a-z\d]+/g, separator)
+	);
 
-	string = string.toLowerCase();
-
-	string = string.replace(/[^a-z\d]+/g, separator);
-
-	string = string
-		// Remove duplicate separators
+const removeDuplicateSeparator = curry2(
+	(separator, string) => string
 		.replace(new RegExp(`${separator}{2,}`, 'g'), separator)
-		// Remove separator from start and end
-		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '');
+		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '')
+);
 
-	return string;
-};
+const toLowerCase = string => string.toLowerCase();
+
+const fromNullable = string => string ? string : '';
+
+const customReplacement = string => string
+	.replace(/&/g, ' and ')
+	.replace(/🦄/g, ' unicorn ')
+	.replace(/♥/g, ' love ');
+
+const decamelize = string => string
+	.replace(/([a-z\d])([A-Z])/g, `$1 $2`)
+	.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, `$1 $2`);
+
+module.exports = compose(
+	removeDuplicateSeparator(separator),
+	insertSeparator(separator),
+	toLowerCase,
+	customReplacement,
+	decamelize,
+	deburr,
+	fromNullable
+);

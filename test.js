@@ -21,4 +21,6 @@ test('main', t => {
 	t.is(slugify('foo🦄'), 'foo-unicorn');
 	t.is(slugify('🦄🦄🦄'), 'unicorn-unicorn-unicorn');
 	t.is(slugify('foo&bar'), 'foo-and-bar');
+	t.is(slugify(undefined), '');
+	t.is(slugify(null), '');
 });
