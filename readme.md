@@ -25,8 +25,27 @@ slugify('  Déjà Vu!  ');
 
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
+
+slugify('BAR and baz', {separator: '_'});
+//=> 'bar_and_baz'
 ```
 
+## API
+
+### slugify(input, [options])
+
+#### input
+
+Type: `string`
+
+#### options
+
+Type: `Object`
+
+##### separator
+
+Type: `string`<br>
+Default: `-`
 
 ## Related
 
