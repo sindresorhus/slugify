@@ -30,3 +30,17 @@ test('custom separator', t => {
 	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@'}), 'unicorns@and@rainbows');
 	t.is(slugify('[foo] [bar]', {separator: '.'}), 'foo.bar', 'escape regexp special characters');
 });
+
+test('custom replacements', t => {
+	t.is(slugify('foo | bar', {customReplacements: [
+		['|', 'or']
+	]}), 'foo-or-bar');
+	t.is(slugify('10 | 20 %', {customReplacements: [
+		['|', 'or'],
+		['%', 'percent']
+	]}), '10-or-20-percent');
+	t.is(slugify('I ♥ 🦄', {customReplacements: [
+		['♥', 'amour'],
+		['🦄', 'licorne']
+	]}), 'i-amour-licorne');
+});
