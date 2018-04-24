@@ -14,7 +14,7 @@ const customReplacements = new Map([
 	['♥', 'love']
 ]);
 
-const doCustomReplacements = string => {
+const doCustomReplacements = (string, customReplacements) => {
 	for (const [key, value] of customReplacements) {
 		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), ` ${value} `);
 	}
@@ -34,14 +34,19 @@ module.exports = (string, options) => {
 	}
 
 	options = Object.assign({
-		separator: '-'
+		separator: '-',
+		customReplacements: []
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
+	const optionsCustomReplacements = new Map([
+		...customReplacements,
+		...options.customReplacements
+	]);
 
 	string = deburr(string);
 	string = decamelize(string);
-	string = doCustomReplacements(string);
+	string = doCustomReplacements(string, optionsCustomReplacements);
 	string = string.toLowerCase();
 	string = string.replace(/[^a-z\d]+/g, separator);
 	string = string.replace(/\\/g, '');
