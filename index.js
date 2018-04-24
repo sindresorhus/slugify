@@ -1,4 +1,4 @@
-'use strict';
+// ES6 is always in strict mode
 const deburr = require('lodash.deburr');
 const escapeStringRegexp = require('escape-string-regexp');
 
@@ -29,7 +29,10 @@ const removeMootSeparators = (string, separator) => {
 };
 
 module.exports = (string, options) => {
-	if (typeof string !== 'string') {
+	if (typeof string === "number") {
+		string = string.toString(); // my filename may be a int or float number
+	}
+	else if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
 
