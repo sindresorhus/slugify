@@ -32,15 +32,23 @@ test('custom separator', t => {
 });
 
 test('custom replacements', t => {
-	t.is(slugify('foo | bar', {customReplacements: [
-		['|', 'or']
-	]}), 'foo-or-bar');
-	t.is(slugify('10 | 20 %', {customReplacements: [
-		['|', 'or'],
-		['%', 'percent']
-	]}), '10-or-20-percent');
-	t.is(slugify('I ♥ 🦄', {customReplacements: [
-		['♥', 'amour'],
-		['🦄', 'licorne']
-	]}), 'i-amour-licorne');
+	t.is(slugify('foo | bar', {
+		customReplacements: [
+			['|', 'or']
+		]
+	}), 'foo-or-bar');
+
+	t.is(slugify('10 | 20 %', {
+		customReplacements: [
+			['|', 'or'],
+			['%', 'percent']
+		]
+	}), '10-or-20-percent');
+
+	t.is(slugify('I ♥ 🦄', {
+		customReplacements: [
+			['♥', 'amour'],
+			['🦄', 'licorne']
+		]
+	}), 'i-amour-licorne');
 });

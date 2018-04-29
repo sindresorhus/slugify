@@ -8,14 +8,14 @@ const decamelize = string => {
 		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, `$1 $2`);
 };
 
-const customReplacements = new Map([
+const builtinReplacements = new Map([
 	['&', 'and'],
 	['🦄', 'unicorn'],
 	['♥', 'love']
 ]);
 
-const doCustomReplacements = (string, customReplacements) => {
-	for (const [key, value] of customReplacements) {
+const doCustomReplacements = (string, replacements) => {
+	for (const [key, value] of replacements) {
 		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), ` ${value} `);
 	}
 
@@ -39,14 +39,14 @@ module.exports = (string, options) => {
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
-	const optionsCustomReplacements = new Map([
-		...customReplacements,
+	const customReplacements = new Map([
+		...builtinReplacements,
 		...options.customReplacements
 	]);
 
 	string = deburr(string);
 	string = decamelize(string);
-	string = doCustomReplacements(string, optionsCustomReplacements);
+	string = doCustomReplacements(string, customReplacements);
 	string = string.toLowerCase();
 	string = string.replace(/[^a-z\d]+/g, separator);
 	string = string.replace(/\\/g, '');
