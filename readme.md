@@ -47,8 +47,10 @@ Type: `Object`
 Type: `string`<br>
 Default: `-`
 
+
 ## Related
 
+- [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
 - [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
 
 
