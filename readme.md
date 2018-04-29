@@ -28,6 +28,13 @@ slugify('fooBar 123 $#%');
 
 slugify('BAR and baz', {separator: '_'});
 //=> 'bar_and_baz'
+
+slugify('I ♥ 🦄 & 🐶', {
+  customReplacements: [
+    ['🐶', 'dog']
+  ]
+});
+//=> 'i-love-unicorn-and-dog'
 ```
 
 ## API
@@ -46,6 +53,17 @@ Type: `Object`
 
 Type: `string`<br>
 Default: `-`
+
+##### customReplacements
+
+Type: `Array`<br>
+Default: `[
+  ['&', 'and'],
+  ['🦄', 'unicorn'],
+  ['♥', 'love']
+]`
+
+Specifying this only replaces the default if you set an item with the same key, like `&`.
 
 
 ## Related
