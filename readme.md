@@ -56,15 +56,19 @@ Default: `-`
 
 ##### customReplacements
 
-Type: `array`<br>
+Type: `Array`<br>
 Default: `[
   ['&', 'and'],
   ['🦄', 'unicorn'],
   ['♥', 'love']
 ]`
 
+Specifying this only replaces the default if you set an item with the same key, like `&`.
+
+
 ## Related
 
+- [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
 - [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
 
 
