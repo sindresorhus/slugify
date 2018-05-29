@@ -35,20 +35,27 @@ module.exports = (string, options) => {
 
 	options = Object.assign({
 		separator: '-',
-		customReplacements: []
+		customReplacements: [],
+		lowerCase: true
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
+	const {lowerCase} = options;
 	const customReplacements = new Map([
 		...builtinReplacements,
 		...options.customReplacements
 	]);
 
+	let regex = /[^a-zA-Z\d]+/g;
+
 	string = deburr(string);
 	string = decamelize(string);
 	string = doCustomReplacements(string, customReplacements);
-	string = string.toLowerCase();
-	string = string.replace(/[^a-z\d]+/g, separator);
+	if (lowerCase) {
+		string = string.toLowerCase();
+		regex = /[^a-z\d]+/g;
+	}
+	string = string.replace(regex, separator);
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);
 
