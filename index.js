@@ -35,7 +35,8 @@ module.exports = (string, options) => {
 
 	options = Object.assign({
 		separator: '-',
-		customReplacements: []
+		customReplacements: [],
+		decamelize: true,
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
@@ -45,7 +46,9 @@ module.exports = (string, options) => {
 	]);
 
 	string = deburr(string);
-	string = decamelize(string);
+	if (options.decamelize) {
+		string = decamelize(string);
+	}
 	string = doCustomReplacements(string, customReplacements);
 	string = string.toLowerCase();
 	string = string.replace(/[^a-z\d]+/g, separator);
