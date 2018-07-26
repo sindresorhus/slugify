@@ -36,7 +36,7 @@ module.exports = (string, options) => {
 	options = Object.assign({
 		separator: '-',
 		customReplacements: [],
-		decamelize: true,
+		decamelize: true
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
