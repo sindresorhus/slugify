@@ -1,2 +1,10 @@
+# editors
+.idea
+.vscode
+
+# build output
+lib
+
+# dependencies
 node_modules
-yarn.lock
+package-lock.json
