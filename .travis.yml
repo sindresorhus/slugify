@@ -1,4 +1,23 @@
 language: node_js
 node_js:
-  - '8'
   - '6'
+  - 'node'
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+stages:
+  - test
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - yarn test-ci
