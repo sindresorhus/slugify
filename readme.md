@@ -1,45 +1,53 @@
-# slugify [![Build Status](https://travis-ci.org/sindresorhus/slugify.svg?branch=master)](https://travis-ci.org/sindresorhus/slugify)
+# tslug [![Build Status](https://travis-ci.org/yakovlevyuri/tslug.svg?branch=master)](https://travis-ci.org/yakovlevyuri/tslug)
 
-> Slugify a string
-
-Useful for URLs, filenames, and IDs.
-
+Slugify URLs, filenames and IDs.
 
 ## Install
 
 ```
-$ npm install @sindresorhus/slugify
+$ yarn add tslug
 ```
 
+or
+
+```
+$ npm install tslug
+```
 
 ## Usage
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import tslug from 'tslug';
 
-slugify('I ♥ Dogs');
-//=> 'i-love-dogs'
+tslug('Hello World');
+//=> 'hello-world'
 
-slugify('  Déjà Vu!  ');
+tslug('  Déjà Vu!  ');
 //=> 'deja-vu'
 
-slugify('fooBar 123 $#%');
+tslug('fooBar 123 $#%');
 //=> 'foo-bar-123'
 
-slugify('BAR and baz', {separator: '_'});
+tslug('BAR and baz', { separator: '_' });
 //=> 'bar_and_baz'
 
-slugify('I ♥ 🦄 & 🐶', {
-  customReplacements: [
-    ['🐶', 'dog']
-  ]
+tslug('GraphQL', { decamelize: false });
+//=> 'graphql'
+
+tslug('Foo Bar', { lowerCase: false });
+//=> 'Foo-Bar'
+
+tslug('FooBar Baz', {
+  separator: '@',
+  decamelize: false,
+  lowerCase: true,
 });
-//=> 'i-love-unicorn-and-dog'
+//=> 'foobar@baz'
 ```
 
 ## API
 
-### slugify(input, [options])
+### tslug(input, [options])
 
 #### input
 
@@ -51,27 +59,20 @@ Type: `Object`
 
 ##### separator
 
-Type: `string`<br>
+Type: `string`\
 Default: `-`
 
-##### customReplacements
+##### decamelize
 
-Type: `Array`<br>
-Default: `[
-  ['&', 'and'],
-  ['🦄', 'unicorn'],
-  ['♥', 'love']
-]`
+Type: `boolean`\
+Default: true
 
-Specifying this only replaces the default if you set an item with the same key, like `&`.
+##### lowerCase
 
-
-## Related
-
-- [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
-- [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
-
+Type: `boolean`\
+Default: true
 
 ## License
 
-MIT © [Sindre Sorhus](https://sindresorhus.com)
+MIT © [Yuri Yakovlev](https://mynameisyuri.com)\
+Based on the original [Slugify](https://github.com/sindresorhus/slugify) by [Sindre Sorhus](https://sindresorhus.com)
