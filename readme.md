@@ -1,4 +1,4 @@
-# tslug [![Build Status](https://travis-ci.com/yakovlevyuri/tslug.svg?branch=master)](https://travis-ci.com/yakovlevyuri/tslug)
+# tslug [![Build Status](https://travis-ci.com/yakovlevyuri/tslug.svg?branch=master)](https://travis-ci.com/yakovlevyuri/tslug) [![Greenkeeper badge](https://badges.greenkeeper.io/yakovlevyuri/tslug.svg)](https://greenkeeper.io/)
 
 Slugify URLs, filenames and IDs.
 
