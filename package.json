@@ -1,48 +1,86 @@
 {
-	"name": "@sindresorhus/slugify",
-	"version": "0.3.0",
-	"description": "Slugify a string",
-	"license": "MIT",
-	"repository": "sindresorhus/slugify",
-	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
-	},
-	"engines": {
-		"node": ">=6"
-	},
-	"scripts": {
-		"test": "xo && ava"
-	},
-	"files": [
-		"index.js"
-	],
-	"keywords": [
-		"string",
-		"slugify",
-		"slug",
-		"url",
-		"url-safe",
-		"urlify",
-		"transliterate",
-		"transliteration",
-		"deburr",
-		"unicode",
-		"ascii",
-		"text",
-		"decamelize",
-		"pretty",
-		"clean",
-		"filename",
-		"id"
-	],
-	"dependencies": {
-		"escape-string-regexp": "^1.0.5",
-		"lodash.deburr": "^4.1.0"
-	},
-	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
-	}
+  "name": "tslug",
+  "version": "1.0.3",
+  "description": "Slugify URLs, filenames and IDs",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yakovlevyuri/tslug.git"
+  },
+  "author": {
+    "name": "Yuri Yakovlev",
+    "email": "hi@mynameisyuri.com",
+    "url": "https://mynameisyuri.com"
+  },
+  "keywords": [
+    "string",
+    "slugify",
+    "slug",
+    "url",
+    "url-safe",
+    "urlify",
+    "transliterate",
+    "transliteration",
+    "deburr",
+    "unicode",
+    "ascii",
+    "text",
+    "decamelize",
+    "pretty",
+    "clean",
+    "filename",
+    "id"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "test": "jest",
+    "test-ci": "yarn lint && yarn test",
+    "precommit": "pretty-quick --staged"
+  },
+  "dependencies": {
+    "lodash.deburr": "^4.1.0",
+    "lodash.escaperegexp": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/lodash.deburr": "^4.1.4",
+    "@types/lodash.escaperegexp": "^4.1.4",
+    "husky": "^1.1.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.7.0",
+    "ts-jest": "^23.10.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.1.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/*.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/"
+    ]
+  }
 }
