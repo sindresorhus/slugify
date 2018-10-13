@@ -51,4 +51,10 @@ test('custom replacements', t => {
 			['🦄', 'licorne']
 		]
 	}), 'i-amour-licorne');
+
+	t.is(slugify('x.y.z', {
+		customReplacements: [
+			['.', '']
+		]
+	}), 'xyz');
 });

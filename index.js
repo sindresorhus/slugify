@@ -4,8 +4,8 @@ const escapeStringRegexp = require('escape-string-regexp');
 
 const decamelize = string => {
 	return string
-		.replace(/([a-z\d])([A-Z])/g, `$1 $2`)
-		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, `$1 $2`);
+		.replace(/([a-z\d])([A-Z])/g, '$1 $2')
+		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
 };
 
 const builtinReplacements = new Map([
@@ -16,7 +16,7 @@ const builtinReplacements = new Map([
 
 const doCustomReplacements = (string, replacements) => {
 	for (const [key, value] of replacements) {
-		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), ` ${value} `);
+		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), value.length > 0 ? ` ${value} ` : value);
 	}
 
 	return string;
