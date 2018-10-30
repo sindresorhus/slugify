@@ -47,6 +47,7 @@ module.exports = (string, options) => {
 
 	string = doCustomReplacements(string, customReplacements);
 	string = deburr(string);
+	string = string.normalize('NFKD');
 	string = decamelize(string);
 
 	let patternSlug = /[^a-zA-Z\d]+/g;
