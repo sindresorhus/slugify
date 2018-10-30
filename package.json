@@ -42,7 +42,7 @@
 		"lodash.deburr": "^4.1.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
+		"ava": "^0.25.0",
+		"xo": "^0.23.0"
 	}
 }

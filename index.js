@@ -45,15 +45,17 @@ module.exports = (string, options) => {
 		...options.customReplacements
 	]);
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
-
 	string = deburr(string);
 	string = decamelize(string);
 	string = doCustomReplacements(string, customReplacements);
+
+	let patternSlug = /[^a-zA-Z\d]+/g;
+
 	if (options.lowercase) {
 		string = string.toLowerCase();
 		patternSlug = /[^a-z\d]+/g;
 	}
+
 	string = string.replace(patternSlug, separator);
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);
