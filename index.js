@@ -9,14 +9,14 @@ const decamelize = string => {
 };
 
 const builtinReplacements = new Map([
-	['&', 'and'],
-	['🦄', 'unicorn'],
-	['♥', 'love']
+	['&', ' and '],
+	['🦄', ' unicorn '],
+	['♥', ' love ']
 ]);
 
 const doCustomReplacements = (string, replacements) => {
 	for (const [key, value] of replacements) {
-		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), value.length > 0 ? ` ${value} ` : value);
+		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), value);
 	}
 
 	return string;
@@ -45,9 +45,9 @@ module.exports = (string, options) => {
 		...options.customReplacements
 	]);
 
+	string = doCustomReplacements(string, customReplacements);
 	string = deburr(string);
 	string = decamelize(string);
-	string = doCustomReplacements(string, customReplacements);
 
 	let patternSlug = /[^a-zA-Z\d]+/g;
 

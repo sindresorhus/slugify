@@ -61,12 +61,32 @@ Default: `-`
 
 Type: `Array`<br>
 Default: `[
-  ['&', 'and'],
-  ['🦄', 'unicorn'],
-  ['♥', 'love']
+  ['&', ' and '],
+  ['🦄', ' unicorn '],
+  ['♥', ' love ']
 ]`
 
-Specifying this only replaces the default if you set an item with the same key, like `&`.
+Specifying this only replaces the default if you set an item with the same key, like `&`. The replacements are run on the original string before any other transformations.
+
+```js
+slugify('Foo@unicorn', {
+	customReplacements: [
+		['@', 'at']
+	]
+});
+//=> 'fooatunicorn'
+```
+
+Add a leading and trailing space to the replacement to have it separated by dashes:
+
+```js
+slugify('foo@unicorn', {
+	customReplacements: [
+		['@', ' at ']
+	]
+});
+//=> 'foo-at-unicorn'
+```
 
 ##### lowercase
 

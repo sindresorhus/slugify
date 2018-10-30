@@ -34,21 +34,21 @@ test('custom separator', t => {
 test('custom replacements', t => {
 	t.is(slugify('foo | bar', {
 		customReplacements: [
-			['|', 'or']
+			['|', ' or ']
 		]
 	}), 'foo-or-bar');
 
 	t.is(slugify('10 | 20 %', {
 		customReplacements: [
-			['|', 'or'],
-			['%', 'percent']
+			['|', ' or '],
+			['%', ' percent ']
 		]
 	}), '10-or-20-percent');
 
 	t.is(slugify('I ♥ 🦄', {
 		customReplacements: [
-			['♥', 'amour'],
-			['🦄', 'licorne']
+			['♥', ' amour '],
+			['🦄', ' licorne ']
 		]
 	}), 'i-amour-licorne');
 
@@ -57,6 +57,15 @@ test('custom replacements', t => {
 			['.', '']
 		]
 	}), 'xyz');
+
+	t.is(slugify('Zürich', {
+		customReplacements: [
+			['ä', 'ae'],
+			['ö', 'oe'],
+			['ü', 'ue'],
+			['ß', 'ss']
+		]
+	}), 'zuerich');
 });
 
 test('lowercase option', t => {
