@@ -76,3 +76,7 @@ test('lowercase option', t => {
 	t.is(slugify('[foo] [bar]', {separator: '.', lowercase: false}), 'foo.bar', 'escape regexp special characters');
 	t.is(slugify('Foo🦄', {lowercase: false}), 'Foo-unicorn');
 });
+
+test('supports German umlauts', t => {
+	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
+});
