@@ -35,6 +35,9 @@ slugify('I ♥ 🦄 & 🐶', {
   ]
 });
 //=> 'i-love-unicorn-and-dog'
+
+slugify('Déjà Vu!', {lowercase: false});
+//=> 'Deja-Vu'
 ```
 
 ## API
@@ -64,6 +67,11 @@ Default: `[
 ]`
 
 Specifying this only replaces the default if you set an item with the same key, like `&`.
+
+##### lowercase
+
+Type: `Boolean`<br>
+Default: `true`
 
 
 ## Related

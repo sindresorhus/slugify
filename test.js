@@ -58,3 +58,12 @@ test('custom replacements', t => {
 		]
 	}), 'xyz');
 });
+
+test('lowercase option', t => {
+	t.is(slugify('foo bar', {lowercase: false}), 'foo-bar');
+	t.is(slugify('BAR&baz', {lowercase: false}), 'BAR-and-baz');
+	t.is(slugify('Déjà Vu!', {separator: '_', lowercase: false}), 'Deja_Vu');
+	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@', lowercase: false}), 'UNICORNS@AND@RAINBOWS');
+	t.is(slugify('[foo] [bar]', {separator: '.', lowercase: false}), 'foo.bar', 'escape regexp special characters');
+	t.is(slugify('Foo🦄', {lowercase: false}), 'Foo-unicorn');
+});
