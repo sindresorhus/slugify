@@ -31,8 +31,9 @@ module.exports = (string, options) => {
 
 	options = Object.assign({
 		separator: '-',
-		customReplacements: [],
-		lowercase: true
+		lowercase: true,
+		decamelize: true,
+		customReplacements: []
 	}, options);
 
 	const separator = escapeStringRegexp(options.separator);
@@ -45,7 +46,10 @@ module.exports = (string, options) => {
 	string = doCustomReplacements(string, customReplacements);
 	string = deburr(string);
 	string = string.normalize('NFKD');
-	string = decamelize(string);
+
+	if (options.decamelize) {
+		string = decamelize(string);
+	}
 
 	let patternSlug = /[^a-zA-Z\d]+/g;
 

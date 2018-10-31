@@ -77,6 +77,11 @@ test('lowercase option', t => {
 	t.is(slugify('Foo🦄', {lowercase: false}), 'Foo-unicorn');
 });
 
+test('decamelize option', t => {
+	t.is(slugify('fooBar'), 'foo-bar');
+	t.is(slugify('fooBar', {decamelize: false}), 'foobar');
+});
+
 test('supports German umlauts', t => {
 	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
 });

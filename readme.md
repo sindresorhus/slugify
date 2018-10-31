@@ -59,6 +59,28 @@ Type: `Object`
 Type: `string`<br>
 Default: `-`
 
+##### lowercase
+
+Type: `boolean`<br>
+Default: `true`
+
+Make the slug lowercase.
+
+##### decamelize
+
+Type: `boolean`<br>
+Default: `true`
+
+Convert camelcase to separate words. Internally it does `fooBar` → `foo bar`.
+
+```js
+slugify('fooBar');
+//=> 'foo-bar'
+
+slugify('fooBar', {decamelize: false});
+//=> 'foobar'
+```
+
 ##### customReplacements
 
 Type: `Array`<br>
@@ -89,11 +111,6 @@ slugify('foo@unicorn', {
 });
 //=> 'foo-at-unicorn'
 ```
-
-##### lowercase
-
-Type: `Boolean`<br>
-Default: `true`
 
 
 ## Related
