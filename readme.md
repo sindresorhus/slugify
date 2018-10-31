@@ -28,18 +28,12 @@ slugify('  Déjà Vu!  ');
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
 
-slugify('BAR and baz', {separator: '_'});
-//=> 'bar_and_baz'
-
 slugify('I ♥ 🦄 & 🐶', {
-  customReplacements: [
-    ['🐶', 'dog']
-  ]
+	customReplacements: [
+		['🐶', 'dog']
+	]
 });
 //=> 'i-love-unicorn-and-dog'
-
-slugify('Déjà Vu!', {lowercase: false});
-//=> 'Deja-Vu'
 ```
 
 ## API
@@ -59,12 +53,28 @@ Type: `Object`
 Type: `string`<br>
 Default: `-`
 
+```js
+slugify('BAR and baz');
+//=> 'bar-and-baz'
+
+slugify('BAR and baz', {separator: '_'});
+//=> 'bar_and_baz'
+```
+
 ##### lowercase
 
 Type: `boolean`<br>
 Default: `true`
 
 Make the slug lowercase.
+
+```js
+slugify('Déjà Vu!');
+//=> 'deja-vu'
+
+slugify('Déjà Vu!', {lowercase: false});
+//=> 'Deja-Vu'
+```
 
 ##### decamelize
 
@@ -83,11 +93,11 @@ slugify('fooBar', {decamelize: false});
 
 ##### customReplacements
 
-Type: `Array`<br>
+Type: `Array<string[]>`<br>
 Default: `[
-  ['&', ' and '],
-  ['🦄', ' unicorn '],
-  ['♥', ' love ']
+	['&', ' and '],
+	['🦄', ' unicorn '],
+	['♥', ' love ']
 ]`
 
 Specifying this only replaces the default if you set an item with the same key, like `&`. The replacements are run on the original string before any other transformations.
