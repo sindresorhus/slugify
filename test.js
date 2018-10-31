@@ -88,3 +88,7 @@ test('supports Vietnamese', t => {
 test('supports Arabic', t => {
 	t.is(slugify('ث س و', {lowercase: false, separator: ' '}), 'th s w');
 });
+
+test('supports Russian', t => {
+	t.is(slugify('Ж п ю', {lowercase: false, separator: ' '}), 'Zh p yu');
+});
