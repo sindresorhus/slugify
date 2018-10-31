@@ -84,3 +84,7 @@ test('supports German umlauts', t => {
 test('supports Vietnamese', t => {
 	t.is(slugify('ố Ừ Đ', {lowercase: false, separator: ' '}), 'o U D');
 });
+
+test('supports Arabic', t => {
+	t.is(slugify('ث س و', {lowercase: false, separator: ' '}), 'th s w');
+});
