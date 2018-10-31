@@ -92,3 +92,7 @@ test('supports Arabic', t => {
 test('supports Russian', t => {
 	t.is(slugify('Ж п ю', {lowercase: false, separator: ' '}), 'Zh p yu');
 });
+
+test('supports Romanian', t => {
+	t.is(slugify('ș Ț', {lowercase: false, separator: ' '}), 's t');
+});
