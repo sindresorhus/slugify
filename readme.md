@@ -4,6 +4,8 @@
 
 Useful for URLs, filenames, and IDs.
 
+It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, and more.
+
 
 ## Install
 

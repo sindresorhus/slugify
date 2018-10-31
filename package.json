@@ -16,7 +16,9 @@
 		"test": "xo && ava"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"replacements.js",
+		"overridable-replacements.js"
 	],
 	"keywords": [
 		"string",

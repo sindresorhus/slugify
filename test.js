@@ -80,3 +80,7 @@ test('lowercase option', t => {
 test('supports German umlauts', t => {
 	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
 });
+
+test('supports Vietnamese', t => {
+	t.is(slugify('ố Ừ Đ', {lowercase: false, separator: ' '}), 'o U D');
+});

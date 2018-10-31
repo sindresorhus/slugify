@@ -1,29 +1,14 @@
 'use strict';
 const deburr = require('lodash.deburr');
 const escapeStringRegexp = require('escape-string-regexp');
+const builtinReplacements = require('./replacements');
+const builtinOverridableReplacements = require('./overridable-replacements');
 
 const decamelize = string => {
 	return string
 		.replace(/([a-z\d])([A-Z])/g, '$1 $2')
 		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
 };
-
-const builtinReplacements = [
-	['&', ' and '],
-	['🦄', ' unicorn '],
-	['♥', ' love ']
-];
-
-const builtinFrozenReplacements = [
-	// German umlauts
-	['ä', 'ae'],
-	['ö', 'oe'],
-	['ü', 'ue'],
-	['Ä', 'Ae'],
-	['Ö', 'Oe'],
-	['Ü', 'Ue'],
-	['ß', 'ss']
-];
 
 const doCustomReplacements = (string, replacements) => {
 	for (const [key, value] of replacements) {
@@ -52,9 +37,9 @@ module.exports = (string, options) => {
 
 	const separator = escapeStringRegexp(options.separator);
 	const customReplacements = new Map([
-		...builtinReplacements,
+		...builtinOverridableReplacements,
 		...options.customReplacements,
-		...builtinFrozenReplacements
+		...builtinReplacements
 	]);
 
 	string = doCustomReplacements(string, customReplacements);
