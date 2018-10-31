@@ -8,11 +8,22 @@ const decamelize = string => {
 		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
 };
 
-const builtinReplacements = new Map([
+const builtinReplacements = [
 	['&', ' and '],
 	['🦄', ' unicorn '],
 	['♥', ' love ']
-]);
+];
+
+const builtinFrozenReplacements = [
+	// German umlauts
+	['ä', 'ae'],
+	['ö', 'oe'],
+	['ü', 'ue'],
+	['Ä', 'Ae'],
+	['Ö', 'Oe'],
+	['Ü', 'Ue'],
+	['ß', 'ss']
+];
 
 const doCustomReplacements = (string, replacements) => {
 	for (const [key, value] of replacements) {
@@ -42,7 +53,8 @@ module.exports = (string, options) => {
 	const separator = escapeStringRegexp(options.separator);
 	const customReplacements = new Map([
 		...builtinReplacements,
-		...options.customReplacements
+		...options.customReplacements,
+		...builtinFrozenReplacements
 	]);
 
 	string = doCustomReplacements(string, customReplacements);
