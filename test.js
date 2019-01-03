@@ -101,3 +101,7 @@ test('supports Russian', t => {
 test('supports Romanian', t => {
 	t.is(slugify('ș Ț', {lowercase: false, separator: ' '}), 's t');
 });
+
+test('supports Turkish', t => {
+	t.is(slugify('İ ı Ş ş Ç ç Ğ ğ', {lowercase: false, separator: ' '}), 'i i s s c c g g');
+});
