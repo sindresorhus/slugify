@@ -94,6 +94,18 @@ test('supports Arabic', t => {
 	t.is(slugify('ث س و', {lowercase: false, separator: ' '}), 'th s w');
 });
 
+test('supports Persian / Farsi', t => {
+	t.is(slugify('چ ی پ', {lowercase: false, separator: ' '}), 'ch y p');
+});
+
+test('supports Urdu', t => {
+	t.is(slugify('ٹ ڈ ھ', {lowercase: false, separator: ' '}), 't d h');
+});
+
+test('supports Pashto', t => {
+	t.is(slugify('ګ ړ څ', {lowercase: false, separator: ' '}), 'g r c');
+});
+
 test('supports Russian', t => {
 	t.is(slugify('Ж п ю', {lowercase: false, separator: ' '}), 'Zh p yu');
 });
