@@ -24,7 +24,7 @@ const removeMootSeparators = (string, separator) => {
 		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '');
 };
 
-module.exports = (string, options) => {
+const slugify = (string, options) => {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
@@ -64,3 +64,6 @@ module.exports = (string, options) => {
 
 	return string;
 };
+
+module.exports = slugify;
+module.exports.default = slugify;
