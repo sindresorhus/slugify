@@ -1,5 +1,5 @@
 import {expectType} from 'tsd-check';
-import {slugify} from '.';
+import slugify from '.';
 
 expectType<string>(slugify('I ♥ Dogs'));
 expectType<string>(slugify('BAR and baz', {separator: '_'}));

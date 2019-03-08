@@ -29,12 +29,13 @@ const slugify = (string, options) => {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
 
-	options = Object.assign({
+	options = {
 		separator: '-',
 		lowercase: true,
 		decamelize: true,
-		customReplacements: []
-	}, options);
+		customReplacements: [],
+		...options
+	};
 
 	const separator = escapeStringRegexp(options.separator);
 	const customReplacements = new Map([

@@ -1,8 +1,10 @@
 export interface Options {
 	/**
-	 * @default "-"
+	 * @default '-'
 	 *
 	 * @example
+	 *
+	 * import slugify from '@sindresorhus/slugify';
 	 *
 	 * slugify('BAR and baz');
 	 * //=> 'bar-and-baz'
@@ -19,6 +21,8 @@ export interface Options {
 	 *
 	 * @example
 	 *
+	 * import slugify from '@sindresorhus/slugify';
+	 *
 	 * slugify('Déjà Vu!');
 	 * //=> 'deja-vu'
 	 *
@@ -33,6 +37,8 @@ export interface Options {
 	 * @default true
 	 *
 	 * @example
+	 *
+	 * import slugify from '@sindresorhus/slugify';
 	 *
 	 * slugify('fooBar');
 	 * //=> 'foo-bar'
@@ -51,6 +57,8 @@ export interface Options {
 	 * @default [ ['&', ' and '], ['🦄', ' unicorn '], ['♥', ' love '] ]
 	 *
 	 * @example
+	 *
+	 * import slugify from '@sindresorhus/slugify';
 	 *
 	 * slugify('Foo@unicorn', {
 	 * 	customReplacements: [
@@ -74,4 +82,4 @@ export interface Options {
  *
  * @param input - The string to slugify.
  */
-declare function slugify(input: string, options?: Options): string;
+export default function slugify(input: string, options?: Options): string;
