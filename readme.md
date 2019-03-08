@@ -54,6 +54,8 @@ Type: `string`<br>
 Default: `-`
 
 ```js
+const slugify = require('@sindresorhus/slugify');
+
 slugify('BAR and baz');
 //=> 'bar-and-baz'
 
@@ -69,6 +71,8 @@ Default: `true`
 Make the slug lowercase.
 
 ```js
+const slugify = require('@sindresorhus/slugify');
+
 slugify('Déjà Vu!');
 //=> 'deja-vu'
 
@@ -84,6 +88,8 @@ Default: `true`
 Convert camelcase to separate words. Internally it does `fooBar` → `foo bar`.
 
 ```js
+const slugify = require('@sindresorhus/slugify');
+
 slugify('fooBar');
 //=> 'foo-bar'
 
@@ -103,6 +109,8 @@ Default: `[
 Specifying this only replaces the default if you set an item with the same key, like `&`. The replacements are run on the original string before any other transformations.
 
 ```js
+const slugify = require('@sindresorhus/slugify');
+
 slugify('Foo@unicorn', {
 	customReplacements: [
 		['@', 'at']
@@ -114,6 +122,8 @@ slugify('Foo@unicorn', {
 Add a leading and trailing space to the replacement to have it separated by dashes:
 
 ```js
+const slugify = require('@sindresorhus/slugify');
+
 slugify('foo@unicorn', {
 	customReplacements: [
 		['@', ' at ']
