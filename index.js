@@ -67,4 +67,5 @@ const slugify = (string, options) => {
 };
 
 module.exports = slugify;
+// TODO: Remove this for the next major release
 module.exports.default = slugify;
