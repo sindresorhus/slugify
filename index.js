@@ -34,6 +34,7 @@ const slugify = (string, options) => {
 		lowercase: true,
 		decamelize: true,
 		customReplacements: [],
+		unicodeRange: false,
 		...options
 	};
 
@@ -52,11 +53,17 @@ const slugify = (string, options) => {
 		string = decamelize(string);
 	}
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
+	let patternSlug =
+		options.unicodeRange ?
+			new RegExp(`[^a-zA-Z\\d${options.unicodeRange}]+`, 'g') :
+			/[^a-zA-Z\d]+/g;
 
 	if (options.lowercase) {
 		string = string.toLowerCase();
-		patternSlug = /[^a-z\d]+/g;
+		patternSlug =
+			options.unicodeRange ?
+				new RegExp(`[^a-z\\d${options.unicodeRange}]+`, 'g') :
+				/[^a-z\d]+/g;
 	}
 
 	string = string.replace(patternSlug, separator);

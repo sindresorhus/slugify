@@ -82,6 +82,14 @@ test('decamelize option', t => {
 	t.is(slugify('fooBar', {decamelize: false}), 'foobar');
 });
 
+test('unicode range option', t => {
+	t.is(slugify('爱就是答案', {
+		unicodeRange: '\u4E00-\u9FFF'
+	}), '爱就是答案', 'CJK Unified Ideographs');
+	t.is(slugify('प्यार', {unicodeRange: '\u0900-\u097F'}), 'प्यार', 'Devanagari');
+	t.is(slugify('love, and, peace, and happiness', {unicodeRange: '\u4E00-\u9FFF'}), 'love-and-peace-and-happiness');
+});
+
 test('supports German umlauts', t => {
 	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
 });
