@@ -132,6 +132,20 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
+##### Custom Unicode Range
+
+Pass a [Unicode Charachter Range](https://jrgraphix.net/research/unicode_blocks.php) as an option to keep it from being replaced.
+
+```js
+const slugify = require('@sindresorhus/slugify');
+
+// CJK Unified Ideographs
+slugify('爱就是答案', {
+	unicodeRange: '\u4E00-\u9FFF'
+});
+//=> '爱就是答案'
+```
+
 
 ## Related
 
