@@ -83,42 +83,35 @@ declare namespace slugify {
 	}
 }
 
-declare const slugify: {
-	/**
-	Slugify a string.
+/**
+Slugify a string.
 
-	@param input - The string to slugify.
+@param string - String to slugify.
 
-	@example
-	```
-	import slugify = require('@sindresorhus/slugify');
+@example
+```
+import slugify = require('@sindresorhus/slugify');
 
-	slugify('I ♥ Dogs');
-	//=> 'i-love-dogs'
+slugify('I ♥ Dogs');
+//=> 'i-love-dogs'
 
-	slugify('  Déjà Vu!  ');
-	//=> 'deja-vu'
+slugify('  Déjà Vu!  ');
+//=> 'deja-vu'
 
-	slugify('fooBar 123 $#%');
-	//=> 'foo-bar-123'
+slugify('fooBar 123 $#%');
+//=> 'foo-bar-123'
 
-	slugify('I ♥ 🦄 & 🐶', {
-		customReplacements: [
-			['🐶', 'dog']
-		]
-	});
-	//=> 'i-love-unicorn-and-dog'
-	```
-	*/
-	(input: string, options?: slugify.Options): string;
-
-	// TODO: Remove this for the next major release, refactor the whole definition to:
-	// declare function slugify(
-	// 	input: string,
-	// 	options?: slugify.Options
-	// ): string;
-	// export = slugify;
-	default: typeof slugify;
-};
+slugify('I ♥ 🦄 & 🐶', {
+	customReplacements: [
+		['🐶', 'dog']
+	]
+});
+//=> 'i-love-unicorn-and-dog'
+```
+*/
+declare function slugify(
+	string: string,
+	options?: slugify.Options
+): string;
 
 export = slugify;

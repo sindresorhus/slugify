@@ -41,12 +41,12 @@
 		"id"
 	],
 	"dependencies": {
-		"escape-string-regexp": "^1.0.5",
+		"escape-string-regexp": "^2.0.0",
 		"lodash.deburr": "^4.1.0"
 	},
 	"devDependencies": {
 		"ava": "^1.4.1",
-		"tsd": "^0.7.2",
+		"tsd": "^0.7.3",
 		"xo": "^0.24.0"
 	}
 }

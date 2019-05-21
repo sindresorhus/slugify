@@ -38,15 +38,17 @@ slugify('I ♥ 🦄 & 🐶', {
 
 ## API
 
-### slugify(input, [options])
+### slugify(string, [options])
 
-#### input
+#### string
 
 Type: `string`
 
+String to slugify.
+
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### separator
 
