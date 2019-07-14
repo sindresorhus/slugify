@@ -6,6 +6,8 @@ const builtinOverridableReplacements = require('./overridable-replacements');
 
 const decamelize = string => {
 	return string
+		.replace(/([A-Z]{2,})([a-z\d]+)/g, '$1 $2')
+		.replace(/([a-z\d]+)([A-Z]{2,})/g, '$1 $2')
 		.replace(/([a-z\d])([A-Z])/g, '$1 $2')
 		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
 };
