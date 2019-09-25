@@ -1,5 +1,6 @@
 'use strict';
 const deburr = require('lodash.deburr');
+const flatten = require('lodash.flatten');
 const escapeStringRegexp = require('escape-string-regexp');
 const specialCharsReplacements = require('./dictionaries/special-chars');
 
@@ -39,7 +40,7 @@ const slugify = (string, options) => {
 
 	const separator = escapeStringRegexp(options.separator);
 	const customReplacements = new Map([
-		...options.dictionaries.flat(),
+		...flatten(options.dictionaries),
 		...specialCharsReplacements,
 		...options.customReplacements
 	]);
