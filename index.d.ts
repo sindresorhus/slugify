@@ -82,10 +82,20 @@ declare namespace slugify {
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
 
 		/**
-		Specifying this only replaces the default if you set an item with the same key, like `&`.
-		The replacements are run on the original string before any other transformations.
+		Use this option to load language-specific dictionary with predefined values. Can be overridden by `customReplacements`.
 
-		Add a leading and trailing space to the replacement to have it separated by dashes.
+		Available language dictionaries are:
+		- `arabic`
+		- `german`
+		- `pashto`
+		- `persian`
+		- `romanian`
+		- `russian`
+		- `swedish`
+		- `turkish`
+		- `urdu`
+		- `vietnamese`
+		- `special-chars` (for emojis and other complex chars such as `&`)
 
 		@default []
 
