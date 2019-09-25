@@ -80,6 +80,27 @@ declare namespace slugify {
 		```
 		*/
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
+
+		/**
+		Specifying this only replaces the default if you set an item with the same key, like `&`.
+		The replacements are run on the original string before any other transformations.
+
+		Add a leading and trailing space to the replacement to have it separated by dashes.
+
+		@default []
+
+		@example
+		```
+		import slugify = require('@sindresorhus/slugify');
+		import swedish = require('@sindresorhus/slugify/dictionaries/swedish');
+
+		slugify('öä', {
+			dictionaries: [swedish]
+		});
+		//=> 'oa'
+		```
+		*/
+		readonly dictionaries?: ReadonlyArray<ReadonlyArray<[string, string]>>;
 	}
 }
 

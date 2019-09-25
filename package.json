@@ -9,6 +9,11 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "sindresorhus.com"
 	},
+	"contributors": [{
+		"name": "Raphaël MARQUES",
+		"email": "work.rmarques@gmail.com",
+		"url": "raphaelmarques.fr"
+	}],
 	"engines": {
 		"node": ">=8"
 	},
@@ -18,8 +23,17 @@
 	"files": [
 		"index.js",
 		"index.d.ts",
-		"replacements.js",
-		"overridable-replacements.js"
+		"dictionaries/arabic.js",
+		"dictionaries/german.js",
+		"dictionaries/pashto.js",
+		"dictionaries/persian.js",
+		"dictionaries/romanian.js",
+		"dictionaries/russian.js",
+		"dictionaries/special-chars.js",
+		"dictionaries/swedish.js",
+		"dictionaries/turkish.js",
+		"dictionaries/urdu.js",
+		"dictionaries/vietnamese.js"
 	],
 	"keywords": [
 		"string",

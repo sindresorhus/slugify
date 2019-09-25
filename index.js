@@ -1,8 +1,7 @@
 'use strict';
 const deburr = require('lodash.deburr');
 const escapeStringRegexp = require('escape-string-regexp');
-const builtinReplacements = require('./replacements');
-const builtinOverridableReplacements = require('./overridable-replacements');
+const specialCharsReplacements = require('./dictionaries/special-chars');
 
 const decamelize = string => {
 	return string
@@ -33,15 +32,16 @@ const slugify = (string, options) => {
 		separator: '-',
 		lowercase: true,
 		decamelize: true,
+		dictionaries: [],
 		customReplacements: [],
 		...options
 	};
 
 	const separator = escapeStringRegexp(options.separator);
 	const customReplacements = new Map([
-		...builtinOverridableReplacements,
-		...options.customReplacements,
-		...builtinReplacements
+		...options.dictionaries.flat(),
+		...specialCharsReplacements,
+		...options.customReplacements
 	]);
 
 	string = doCustomReplacements(string, customReplacements);

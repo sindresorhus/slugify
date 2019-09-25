@@ -83,37 +83,58 @@ test('decamelize option', t => {
 });
 
 test('supports German umlauts', t => {
-	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
+	const dict = require('./dictionaries/german');
+	t.is(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'ae oe ue Ae Oe Ue ss');
+});
+
+test('supports Swedish', t => {
+	const dict = require('./dictionaries/swedish');
+	t.is(slugify('ä ö Ä Ö', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'a o A O');
 });
 
 test('supports Vietnamese', t => {
-	t.is(slugify('ố Ừ Đ', {lowercase: false, separator: ' '}), 'o U D');
+	const dict = require('./dictionaries/vietnamese');
+	t.is(slugify('ố Ừ Đ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'o U D');
 });
 
 test('supports Arabic', t => {
-	t.is(slugify('ث س و', {lowercase: false, separator: ' '}), 'th s w');
+	const dict = require('./dictionaries/arabic');
+	t.is(slugify('ث س و', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'th s w');
 });
 
 test('supports Persian / Farsi', t => {
-	t.is(slugify('چ ی پ', {lowercase: false, separator: ' '}), 'ch y p');
+	const dict = require('./dictionaries/persian');
+	t.is(slugify('چ ی پ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'ch y p');
 });
 
 test('supports Urdu', t => {
-	t.is(slugify('ٹ ڈ ھ', {lowercase: false, separator: ' '}), 't d h');
+	const dict = require('./dictionaries/urdu');
+	t.is(slugify('ٹ ڈ ھ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 't d h');
 });
 
 test('supports Pashto', t => {
-	t.is(slugify('ګ ړ څ', {lowercase: false, separator: ' '}), 'g r c');
+	const dict = require('./dictionaries/pashto');
+	t.is(slugify('ګ ړ څ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'g r c');
 });
 
 test('supports Russian', t => {
-	t.is(slugify('Ж п ю', {lowercase: false, separator: ' '}), 'Zh p yu');
+	const dict = require('./dictionaries/russian');
+	t.is(slugify('Ж п ю', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'Zh p yu');
 });
 
 test('supports Romanian', t => {
-	t.is(slugify('ș Ț', {lowercase: false, separator: ' '}), 's t');
+	const dict = require('./dictionaries/romanian');
+	t.is(slugify('ș Ț', {lowercase: false, separator: ' ', dictionaries: [dict]}), 's t');
 });
 
 test('supports Turkish', t => {
-	t.is(slugify('İ ı Ş ş Ç ç Ğ ğ', {lowercase: false, separator: ' '}), 'i i s s c c g g');
+	const dict = require('./dictionaries/turkish');
+	t.is(slugify('İ ı Ş ş Ç ç Ğ ğ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'i i s s c c g g');
+});
+
+test('supports a list of dictionary', t => {
+	const arabic = require('./dictionaries/arabic');
+	const swedish = require('./dictionaries/swedish');
+	const vietnamese = require('./dictionaries/vietnamese');
+	t.is(slugify('ä Đ س', {lowercase: false, separator: ' ', dictionaries: [arabic, swedish, vietnamese]}), 'a D s');
 });

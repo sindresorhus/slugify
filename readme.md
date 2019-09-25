@@ -4,7 +4,7 @@
 
 Useful for URLs, filenames, and IDs.
 
-It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish and more.
+It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish, Swedish and more.
 
 
 ## Install
@@ -132,6 +132,39 @@ slugify('foo@unicorn', {
 	]
 });
 //=> 'foo-at-unicorn'
+```
+
+##### dictionaries
+
+Type: `Array<Array<string[]>>`<br>
+Default: `[]`
+
+Use this option to load language-specific dictionary with predefined values. Can be overridden by `customReplacements`.
+
+Available language dictionaries are:
+- `arabic`
+- `german`
+- `pashto`
+- `persian`
+- `romanian`
+- `russian`
+- `swedish`
+- `turkish`
+- `urdu`
+- `vietnamese`
+- `special-chars` (for emojis and other complex chars such as `&`)
+
+```js
+const slugify = require('@sindresorhus/slugify');
+const arabic = require('@sindresorhus/slugify/dictionaries/arabic');
+const swedish = require('@sindresorhus/slugify/dictionaries/swedish');
+
+slugify('ä Đ س', {
+	dictionaries: [
+		arabic, swedish
+	]
+});
+//=> 'a D s'
 ```
 
 
