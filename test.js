@@ -177,6 +177,11 @@ test('supports Polish', t => {
 	t.is(slugify('ą Ą Ł', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'a A L');
 });
 
+test('supports Ukrainian', t => {
+	const dict = require('./dictionaries/ukrainian');
+	t.is(slugify('Є Ґ ї', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'Ye G yi');
+});
+
 test('supports a list of dictionary', t => {
 	const arabic = require('./dictionaries/arabic');
 	const swedish = require('./dictionaries/swedish');
