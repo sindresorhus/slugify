@@ -4,7 +4,32 @@
 
 Useful for URLs, filenames, and IDs.
 
-It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish, Swedish and more.
+It correctly handles following languages:
+- Arabic
+- Armenian
+- Czech
+- Dhivehi / Maldivian
+- Georgian
+- [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut)
+- Greek
+- Hungarian
+- Latin
+- Latvian
+- Lithuanian
+- Macedonian
+- Pashto / Iranian
+- Persian / Farsi
+- Polish
+- Romanian
+- Russian
+- Serbian
+- Slovak
+- Swedish
+- Turkish
+- Ukrainian
+- Urdu / Hindustani
+- Vietnamese
+- ... and a set of special characters (🦄, &, ♥)
 
 
 ## Install
@@ -143,16 +168,30 @@ Use this option to load language-specific dictionary with predefined values. Can
 
 Available language dictionaries are:
 - `arabic`
+- `armenian`
+- `czech`
+- `dhivehi`
+- `georgian`
 - `german`
+- `greek`
+- `hungarian`
+- `latin`
+- `latvian`
+- `lithuanian`
+- `macedonian`
 - `pashto`
 - `persian`
+- `polish`
 - `romanian`
 - `russian`
+- `serbian`
+- `slovak`
 - `swedish`
 - `turkish`
+- `ukrainian`
 - `urdu`
 - `vietnamese`
-- `special-chars` (for emojis and other complex chars such as `&`)
+- `special-chars` (for emojis and other complex chars such as `&`, `♥`, `🦄`)
 
 ```js
 const slugify = require('@sindresorhus/slugify');
