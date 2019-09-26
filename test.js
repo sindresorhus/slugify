@@ -157,6 +157,11 @@ test('supports Dhivehi', t => {
 	t.is(slugify('ޝ ޓ ބ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'sh t b');
 });
 
+test('supports Greek', t => {
+	const dict = require('./dictionaries/greek');
+	t.is(slugify('θ Γ Ξ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'th G KS');
+});
+
 test('supports a list of dictionary', t => {
 	const arabic = require('./dictionaries/arabic');
 	const swedish = require('./dictionaries/swedish');
