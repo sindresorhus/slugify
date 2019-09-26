@@ -172,6 +172,11 @@ test('supports Macedonian', t => {
 	t.is(slugify('Ќ љ Тс', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'Kj lj Ts');
 });
 
+test('supports Polish', t => {
+	const dict = require('./dictionaries/polish');
+	t.is(slugify('ą Ą Ł', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'a A L');
+});
+
 test('supports a list of dictionary', t => {
 	const arabic = require('./dictionaries/arabic');
 	const swedish = require('./dictionaries/swedish');
