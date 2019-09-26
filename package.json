@@ -26,6 +26,7 @@
 		"index.js",
 		"index.d.ts",
 		"dictionaries/arabic.js",
+		"dictionaries/armenian.js",
 		"dictionaries/german.js",
 		"dictionaries/pashto.js",
 		"dictionaries/persian.js",

@@ -132,6 +132,11 @@ test('supports Turkish', t => {
 	t.is(slugify('İ ı Ş ş Ç ç Ğ ğ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'i i s s c c g g');
 });
 
+test('supports Armenian', t => {
+	const dict = require('./dictionaries/armenian');
+	t.is(slugify('ա թ խ', {lowercase: false, separator: ' ', dictionaries: [dict]}), 'a t kh');
+});
+
 test('supports a list of dictionary', t => {
 	const arabic = require('./dictionaries/arabic');
 	const swedish = require('./dictionaries/swedish');
