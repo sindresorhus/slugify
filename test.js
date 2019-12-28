@@ -117,3 +117,7 @@ test('supports Romanian', t => {
 test('supports Turkish', t => {
 	t.is(slugify('İ ı Ş ş Ç ç Ğ ğ', {lowercase: false, separator: ' '}), 'i i s s c c g g');
 });
+
+test('supports Georgian', t => {
+	t.is(slugify('ა ღ ჭ ძ კ ყ პ ფ', {lowercase: false, separator: ' '}), 'a gh tch dz k k p ph');
+});
