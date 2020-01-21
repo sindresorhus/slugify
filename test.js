@@ -21,6 +21,9 @@ test('main', t => {
 	t.is(slugify('foo🦄'), 'foo-unicorn');
 	t.is(slugify('🦄🦄🦄'), 'unicorn-unicorn-unicorn');
 	t.is(slugify('foo&bar'), 'foo-and-bar');
+	t.is(slugify('foo360BAR'), 'foo360-bar');
+	t.is(slugify('FOO360'), 'foo-360');
+	t.is(slugify('FOObar'), 'foo-bar');
 });
 
 test('custom separator', t => {
