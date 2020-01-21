@@ -4,15 +4,13 @@
 
 Useful for URLs, filenames, and IDs.
 
-It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish and more.
-
+It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish, and more.
 
 ## Install
 
 ```
 $ npm install @sindresorhus/slugify
 ```
-
 
 ## Usage
 
@@ -38,7 +36,7 @@ slugify('I ♥ 🦄 & 🐶', {
 
 ## API
 
-### slugify(string, [options])
+### slugify(string, options?)
 
 #### string
 
@@ -52,8 +50,8 @@ Type: `object`
 
 ##### separator
 
-Type: `string`<br>
-Default: `-`
+Type: `string`\
+Default: `'-'`
 
 ```js
 const slugify = require('@sindresorhus/slugify');
@@ -67,7 +65,7 @@ slugify('BAR and baz', {separator: '_'});
 
 ##### lowercase
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `true`
 
 Make the slug lowercase.
@@ -84,7 +82,7 @@ slugify('Déjà Vu!', {lowercase: false});
 
 ##### decamelize
 
-Type: `boolean`<br>
+Type: `boolean`\
 Default: `true`
 
 Convert camelcase to separate words. Internally it does `fooBar` → `foo bar`.
@@ -101,7 +99,7 @@ slugify('fooBar', {decamelize: false});
 
 ##### customReplacements
 
-Type: `Array<string[]>`<br>
+Type: `Array<string[]>`\
 Default: `[
 	['&', ' and '],
 	['🦄', ' unicorn '],
@@ -134,13 +132,7 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
-
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
 - [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

@@ -42,6 +42,7 @@ const slugify = (string, options) => {
 	};
 
 	const separator = escapeStringRegexp(options.separator);
+
 	const customReplacements = new Map([
 		...builtinOverridableReplacements,
 		...options.customReplacements,
@@ -71,5 +72,3 @@ const slugify = (string, options) => {
 };
 
 module.exports = slugify;
-// TODO: Remove this for the next major release
-module.exports.default = slugify;
