@@ -124,3 +124,8 @@ test('supports Turkish', t => {
 test('supports Armenian', t => {
 	t.is(slugify('Ե ր ե ւ ա ն', {lowercase: false, separator: ' '}), 're ye v a n');
 });
+
+test('leading underscore', t => {
+	t.is(slugify('_foo bar', {leadingUnderscore: true}), '_foo-bar');
+	t.is(slugify('_foo_bar', {leadingUnderscore: true}), '_foo-bar');
+});

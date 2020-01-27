@@ -132,6 +132,23 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
+##### customReplacements
+
+Type: `boolean`\
+Default: `false`
+
+Allow leading underscore as an escape `_foo_bar` → `_foo-bar`.
+
+```js
+const slugify = require('@sindresorhus/slugify');
+
+slugify('_foo_bar');
+//=> 'foo-bar'
+
+slugify('_foo_bar', {leadingUnderscore: true});
+//=> '_foo-bar'
+```
+
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
