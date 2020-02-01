@@ -132,12 +132,12 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
-##### customReplacements
+##### preserveLeadingUnderscore
 
 Type: `boolean`\
 Default: `false`
 
-Allow leading underscore as an escape `_foo_bar` → `_foo-bar`.
+It preserves leading underscore: `_foo_bar` → `_foo-bar`.
 
 ```js
 const slugify = require('@sindresorhus/slugify');
@@ -145,7 +145,7 @@ const slugify = require('@sindresorhus/slugify');
 slugify('_foo_bar');
 //=> 'foo-bar'
 
-slugify('_foo_bar', {leadingUnderscore: true});
+slugify('_foo_bar', {preserveLeadingUnderscore: true});
 //=> '_foo-bar'
 ```
 

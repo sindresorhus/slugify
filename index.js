@@ -35,10 +35,10 @@ const slugify = (string, options) => {
 
 	options = {
 		separator: '-',
-		leadingUnderscore: false,
 		lowercase: true,
 		decamelize: true,
 		customReplacements: [],
+		preserveLeadingUnderscore: false,
 		...options
 	};
 
@@ -65,7 +65,7 @@ const slugify = (string, options) => {
 		patternSlug = /[^a-z\d]+/g;
 	}
 
-	if (options.leadingUnderscore) {
+	if (options.preserveLeadingUnderscore) {
 		let patternSlugString = patternSlug.source;
 		patternSlugString = `(?!^)_?${patternSlugString}`;
 		patternSlug = new RegExp(patternSlugString, 'g');

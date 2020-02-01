@@ -80,6 +80,24 @@ declare namespace slugify {
 		```
 		*/
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
+
+		/**
+		It preserves leading underscore.
+
+		@default false
+
+		@example
+		```
+		import slugify = require('@sindresorhus/slugify');
+
+		slugify('_foo_bar');
+		//=> 'foo-bar'
+
+		slugify('_foo_bar', {preserveLeadingUnderscore: true});
+		//=> '_foo-bar'
+		```
+		*/
+		readonly preserveLeadingUnderscore?: boolean;
 	}
 }
 

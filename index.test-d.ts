@@ -8,3 +8,4 @@ expectType<string>(slugify('fooBar', {decamelize: false}));
 expectType<string>(
 	slugify('I ♥ 🦄 & 🐶', {customReplacements: [['🐶', 'dog']]})
 );
+expectType<string>(slugify('_foo_bar', {preserveLeadingUnderscore: true}));
