@@ -65,15 +65,13 @@ const slugify = (string, options) => {
 		patternSlug = /[^a-z\d]+/g;
 	}
 
-	if (options.preserveLeadingUnderscore) {
-		let patternSlugString = patternSlug.source;
-		patternSlugString = `(?!^)_?${patternSlugString}`;
-		patternSlug = new RegExp(patternSlugString, 'g');
-	}
-
+	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 	string = string.replace(patternSlug, separator);
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);
+	if (shouldPrependUnderscore) {
+		string = '_' + string;
+	}
 
 	return string;
 };

@@ -137,7 +137,7 @@ slugify('foo@unicorn', {
 Type: `boolean`\
 Default: `false`
 
-It preserves leading underscore: `_foo_bar` → `_foo-bar`.
+If your string starts with an underscore, it will be preserved in the slugified string.
 
 ```js
 const slugify = require('@sindresorhus/slugify');

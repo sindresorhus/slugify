@@ -128,5 +128,6 @@ test('supports Armenian', t => {
 test('leading underscore', t => {
 	t.is(slugify('_foo bar', {preserveLeadingUnderscore: true}), '_foo-bar');
 	t.is(slugify('_foo_bar', {preserveLeadingUnderscore: true}), '_foo-bar');
-	t.is(slugify('__foo__bar', {preserveLeadingUnderscore: true}), '_-foo-bar');
+	t.is(slugify('__foo__bar', {preserveLeadingUnderscore: true}), '_foo-bar');
+	t.is(slugify('____-___foo__bar', {preserveLeadingUnderscore: true}), '_foo-bar');
 });
