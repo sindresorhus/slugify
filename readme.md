@@ -147,6 +147,9 @@ slugify('_foo_bar');
 
 slugify('_foo_bar', {preserveLeadingUnderscore: true});
 //=> '_foo-bar'
+
+slugify('_hidden_filename', {preserveLeadingUnderscore: true});
+//=> '_hidden-filename'
 ```
 
 ## Related

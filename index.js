@@ -42,6 +42,8 @@ const slugify = (string, options) => {
 		...options
 	};
 
+	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
+
 	const separator = escapeStringRegexp(options.separator);
 
 	const customReplacements = new Map([
@@ -65,7 +67,6 @@ const slugify = (string, options) => {
 		patternSlug = /[^a-z\d]+/g;
 	}
 
-	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 	string = string.replace(patternSlug, separator);
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);

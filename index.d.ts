@@ -82,7 +82,7 @@ declare namespace slugify {
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
 
 		/**
-		It preserves leading underscore.
+		If your string starts with an underscore, it will be preserved in the slugified string.
 
 		@default false
 
@@ -95,6 +95,9 @@ declare namespace slugify {
 
 		slugify('_foo_bar', {preserveLeadingUnderscore: true});
 		//=> '_foo-bar'
+
+		slugify('_hidden_filename', {preserveLeadingUnderscore: true});
+		//=> '_hidden-filename'
 		```
 		*/
 		readonly preserveLeadingUnderscore?: boolean;
