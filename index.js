@@ -71,7 +71,7 @@ const slugify = (string, options) => {
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);
 	if (shouldPrependUnderscore) {
-		string = '_' + string;
+		string = `_${string}`;
 	}
 
 	return string;
