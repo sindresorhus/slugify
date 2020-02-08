@@ -137,7 +137,7 @@ slugify('foo@unicorn', {
 Type: `boolean`\
 Default: `false`
 
-If your string starts with an underscore, it will be preserved in the slugified string.
+If your string starts with an underscore, it will be preserved in the slugified string. Sometimes leading underscores are intentional, for example, filenames representing hidden paths on a website.
 
 ```js
 const slugify = require('@sindresorhus/slugify');
