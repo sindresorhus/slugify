@@ -38,8 +38,11 @@ const slugify = (string, options) => {
 		lowercase: true,
 		decamelize: true,
 		customReplacements: [],
+		preserveLeadingUnderscore: false,
 		...options
 	};
+
+	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 
 	const separator = escapeStringRegexp(options.separator);
 
@@ -67,6 +70,10 @@ const slugify = (string, options) => {
 	string = string.replace(patternSlug, separator);
 	string = string.replace(/\\/g, '');
 	string = removeMootSeparators(string, separator);
+
+	if (shouldPrependUnderscore) {
+		string = `_${string}`;
+	}
 
 	return string;
 };

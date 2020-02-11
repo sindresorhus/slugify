@@ -132,6 +132,25 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
+##### preserveLeadingUnderscore
+
+Type: `boolean`\
+Default: `false`
+
+If your string starts with an underscore, it will be preserved in the slugified string.
+
+Sometimes leading underscores are intentional, for example, filenames representing hidden paths on a website.
+
+```js
+const slugify = require('@sindresorhus/slugify');
+
+slugify('_foo_bar');
+//=> 'foo-bar'
+
+slugify('_foo_bar', {preserveLeadingUnderscore: true});
+//=> '_foo-bar'
+```
+
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module

@@ -80,6 +80,25 @@ declare namespace slugify {
 		```
 		*/
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
+
+		/**
+		If your string starts with an underscore, it will be preserved in the slugified string. 
+		Sometimes leading underscores are intentional, for example, filenames representing hidden paths on a website.
+
+		@default false
+
+		@example
+		```
+		import slugify = require('@sindresorhus/slugify');
+
+		slugify('_foo_bar');
+		//=> 'foo-bar'
+
+		slugify('_foo_bar', {preserveLeadingUnderscore: true});
+		//=> '_foo-bar'
+		```
+		*/
+		readonly preserveLeadingUnderscore?: boolean;
 	}
 }
 
