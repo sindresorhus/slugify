@@ -8,7 +8,7 @@
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"engines": {
 		"node": ">=10"
@@ -19,7 +19,6 @@
 	"files": [
 		"index.js",
 		"index.d.ts",
-		"replacements.js",
 		"overridable-replacements.js"
 	],
 	"keywords": [
@@ -42,17 +41,12 @@
 		"id"
 	],
 	"dependencies": {
-		"escape-string-regexp": "^2.0.0",
-		"lodash.deburr": "^4.1.0"
+		"@sindresorhus/transliterate": "^0.1.0",
+		"escape-string-regexp": "^2.0.0"
 	},
 	"devDependencies": {
 		"ava": "^2.4.0",
 		"tsd": "^0.11.0",
-		"xo": "^0.25.3"
-	},
-	"xo": {
-		"rules": {
-			"prefer-named-capture-group": "off"
-		}
+		"xo": "^0.26.1"
 	}
 }

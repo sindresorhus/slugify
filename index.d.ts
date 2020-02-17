@@ -53,8 +53,11 @@ declare namespace slugify {
 		readonly decamelize?: boolean;
 
 		/**
-		Specifying this only replaces the default if you set an item with the same key, like `&`.
+		Add your own custom replacements.
+
 		The replacements are run on the original string before any other transformations.
+
+		This only overrides a default replacement if you set an item with the same key, like `&`.
 
 		Add a leading and trailing space to the replacement to have it separated by dashes.
 
@@ -77,12 +80,20 @@ declare namespace slugify {
 			]
 		});
 		//=> 'foo-at-unicorn'
+
+		slugify('I love 🐶', {
+			customReplacements: [
+				['🐶', 'dogs']
+			]
+		});
+		//=> 'i-love-dogs'
 		```
 		*/
 		readonly customReplacements?: ReadonlyArray<[string, string]>;
 
 		/**
-		If your string starts with an underscore, it will be preserved in the slugified string. 
+		If your string starts with an underscore, it will be preserved in the slugified string.
+
 		Sometimes leading underscores are intentional, for example, filenames representing hidden paths on a website.
 
 		@default false
@@ -120,12 +131,8 @@ slugify('  Déjà Vu!  ');
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
 
-slugify('I ♥ 🦄 & 🐶', {
-	customReplacements: [
-		['🐶', 'dog']
-	]
-});
-//=> 'i-love-unicorn-and-dog'
+slugify('я люблю единорогов');
+//=> 'ya-lyublyu-edinorogov'
 ```
 */
 declare function slugify(

@@ -1,7 +1,6 @@
 'use strict';
-const deburr = require('lodash.deburr');
 const escapeStringRegexp = require('escape-string-regexp');
-const builtinReplacements = require('./replacements');
+const transliterate = require('@sindresorhus/transliterate');
 const builtinOverridableReplacements = require('./overridable-replacements');
 
 const decamelize = string => {
@@ -14,21 +13,15 @@ const decamelize = string => {
 		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
 };
 
-const doCustomReplacements = (string, replacements) => {
-	for (const [key, value] of replacements) {
-		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), value);
-	}
-
-	return string;
-};
-
 const removeMootSeparators = (string, separator) => {
+	const escapedSeparator = escapeStringRegexp(separator);
+
 	return string
-		.replace(new RegExp(`${separator}{2,}`, 'g'), separator)
-		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '');
+		.replace(new RegExp(`${escapedSeparator}{2,}`, 'g'), separator)
+		.replace(new RegExp(`^${escapedSeparator}|${escapedSeparator}$`, 'g'), '');
 };
 
-const slugify = (string, options) => {
+module.exports = (string, options) => {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
@@ -44,17 +37,12 @@ const slugify = (string, options) => {
 
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 
-	const separator = escapeStringRegexp(options.separator);
-
 	const customReplacements = new Map([
 		...builtinOverridableReplacements,
-		...options.customReplacements,
-		...builtinReplacements
+		...options.customReplacements
 	]);
 
-	string = doCustomReplacements(string, customReplacements);
-	string = deburr(string);
-	string = string.normalize('NFKD');
+	string = transliterate(string, {customReplacements});
 
 	if (options.decamelize) {
 		string = decamelize(string);
@@ -67,9 +55,9 @@ const slugify = (string, options) => {
 		patternSlug = /[^a-z\d]+/g;
 	}
 
-	string = string.replace(patternSlug, separator);
+	string = string.replace(patternSlug, options.separator);
 	string = string.replace(/\\/g, '');
-	string = removeMootSeparators(string, separator);
+	string = removeMootSeparators(string, options.separator);
 
 	if (shouldPrependUnderscore) {
 		string = `_${string}`;
@@ -77,5 +65,3 @@ const slugify = (string, options) => {
 
 	return string;
 };
-
-module.exports = slugify;

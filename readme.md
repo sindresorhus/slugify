@@ -4,7 +4,7 @@
 
 Useful for URLs, filenames, and IDs.
 
-It correctly handles [German umlauts](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, Romanian, Turkish, and more.
+It handles most major languages, including [German (umlauts)](https://en.wikipedia.org/wiki/Germanic_umlaut), Vietnamese, Arabic, Russian, [and more](https://github.com/sindresorhus/transliterate#supported-languages).
 
 ## Install
 
@@ -26,12 +26,8 @@ slugify('  Déjà Vu!  ');
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
 
-slugify('I ♥ 🦄 & 🐶', {
-	customReplacements: [
-		['🐶', 'dog']
-	]
-});
-//=> 'i-love-unicorn-and-dog'
+slugify('я люблю единорогов');
+//=> 'ya-lyublyu-edinorogov'
 ```
 
 ## API
@@ -106,7 +102,11 @@ Default: `[
 	['♥', ' love ']
 ]`
 
-Specifying this only replaces the default if you set an item with the same key, like `&`. The replacements are run on the original string before any other transformations.
+Add your own custom replacements.
+
+The replacements are run on the original string before any other transformations.
+
+This only overrides a default replacement if you set an item with the same key, like `&`.
 
 ```js
 const slugify = require('@sindresorhus/slugify');
@@ -132,6 +132,19 @@ slugify('foo@unicorn', {
 //=> 'foo-at-unicorn'
 ```
 
+Another example:
+
+```js
+const slugify = require('@sindresorhus/slugify');
+
+slugify('I love 🐶', {
+	customReplacements: [
+		['🐶', 'dogs']
+	]
+});
+//=> 'i-love-dogs'
+```
+
 ##### preserveLeadingUnderscore
 
 Type: `boolean`\
@@ -154,4 +167,5 @@ slugify('_foo_bar', {preserveLeadingUnderscore: true});
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
+- [transliterate](https://github.com/sindresorhus/transliterate) - Convert Unicode characters to Latin characters using transliteration
 - [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
