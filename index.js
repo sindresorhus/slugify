@@ -81,6 +81,7 @@ module.exports.counter = () => {
 		if (newCounter >= 2 || numberless > 2) {
 			string = `${string}-${newCounter}`;
 		}
+
 		return string;
 	};
 };

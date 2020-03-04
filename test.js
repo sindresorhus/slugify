@@ -145,13 +145,13 @@ test('counter', t => {
 	t.is(countableSlugify('foo'), 'foo-3');
 	t.is(countableSlugify('foo'), 'foo-4');
 	t.is(countableSlugify('foo-1'), 'foo-1-4');
-	t.is(countableSlugify('foo-2'), 'foo-2-1'); // or foo-2-2 ??
+	t.is(countableSlugify('foo-2'), 'foo-2-1'); // Or foo-2-2 ??
 	t.is(countableSlugify('foo-2'), 'foo-2-2');
 	t.is(countableSlugify('foo-2-1'), 'foo-2-1-1');
 	t.is(countableSlugify('foo-2-1'), 'foo-2-1-2');
 	t.is(countableSlugify('foo-11'), 'foo-11-1');
 	t.is(countableSlugify('foo-111'), 'foo-111-1');
 	t.is(countableSlugify('foo-111-1'), 'foo-111-1-1');
-	t.is(countableSlugify('fooCamelCase', { lowercase: false, decamelize: false }), 'fooCamelCase');
-	t.is(countableSlugify('fooCamelCase', { decamelize: false }), 'foocamelcase-2');
+	t.is(countableSlugify('fooCamelCase', {lowercase: false, decamelize: false}), 'fooCamelCase');
+	t.is(countableSlugify('fooCamelCase', {decamelize: false}), 'foocamelcase-2');
 });
