@@ -141,3 +141,10 @@ declare function slugify(
 ): string;
 
 export = slugify;
+
+declare function counter(
+	string: string,
+	options?: slugify.Options
+): string;
+
+declare function reset(): void;
