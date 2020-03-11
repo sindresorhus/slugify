@@ -66,12 +66,10 @@ const slugify = (string, options) => {
 	return string;
 };
 
-module.exports = slugify;
+const counter = () => {
+	const occurrences = new Map();
 
-const occurrences = new Map();
-
-module.exports.counter = () => {
-	return (string, options) => {
+	const countable = (string, options) => {
 		string = slugify(string, options);
 		const stringLower = string.toLowerCase();
 		const numberless = occurrences.get(stringLower.replace(/(?:-\d+?)+?$/, '')) || 0;
@@ -84,8 +82,13 @@ module.exports.counter = () => {
 
 		return string;
 	};
+
+	countable.reset = () => {
+		occurrences.clear();
+	};
+
+	return countable;
 };
 
-module.exports.reset = () => {
-	occurrences.clear();
-};
+module.exports = slugify;
+module.exports.counter = counter;

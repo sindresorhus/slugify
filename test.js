@@ -136,7 +136,7 @@ test('counter', t => {
 	const countableSlugify = slugify.counter();
 	t.is(countableSlugify('foo bar'), 'foo-bar');
 	t.is(countableSlugify('foo bar'), 'foo-bar-2');
-	slugify.reset();
+	countableSlugify.reset();
 	t.is(countableSlugify('foo'), 'foo');
 	t.is(countableSlugify('foo'), 'foo-2');
 	t.is(countableSlugify('foo 1'), 'foo-1');
@@ -154,4 +154,8 @@ test('counter', t => {
 	t.is(countableSlugify('foo-111-1'), 'foo-111-1-1');
 	t.is(countableSlugify('fooCamelCase', {lowercase: false, decamelize: false}), 'fooCamelCase');
 	t.is(countableSlugify('fooCamelCase', {decamelize: false}), 'foocamelcase-2');
+
+	const countableSlugify2 = slugify.counter();
+	t.is(countableSlugify2('foo'), 'foo');
+	t.is(countableSlugify2('foo'), 'foo-2');
 });
