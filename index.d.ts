@@ -133,6 +133,15 @@ slugify('fooBar 123 $#%');
 
 slugify('я люблю единорогов');
 //=> 'ya-lyublyu-edinorogov'
+
+const countableSlugify = slugify.counter();
+countableSlugify('Be a unicorn');
+// => 'be-a-unicorn'
+countableSlugify('Be a unicorn');
+// => 'be-a-unicorn-2'
+countableSlugify.reset();
+countableSlugify('Be a unicorn');
+// => 'be-a-unicorn'
 ```
 */
 declare const slugify: {
