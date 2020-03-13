@@ -135,16 +135,21 @@ slugify('я люблю единорогов');
 //=> 'ya-lyublyu-edinorogov'
 ```
 */
-declare function slugify(
-	string: string,
-	options?: slugify.Options
-): string;
+declare const slugify: {
+	(
+		string: string,
+		options?: slugify.Options
+	): string;
+
+	counter: () => {
+		(
+			string: string,
+			options?: slugify.Options
+		): string;
+
+		reset(): void;
+	};
+}
 
 export = slugify;
 
-declare function counter(
-	string: string,
-	options?: slugify.Options
-): string;
-
-declare function reset(): void;
