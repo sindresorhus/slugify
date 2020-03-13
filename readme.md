@@ -164,6 +164,45 @@ slugify('_foo_bar', {preserveLeadingUnderscore: true});
 //=> '_foo-bar'
 ```
 
+### slugify.counter()
+
+Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
+
+#### Example
+
+```js
+const slugify = require('@sindresorhus/slugify');
+
+const countableSlugify = slugify.counter();
+
+countableSlugify('foo bar');
+//=> 'foo-bar'
+
+countableSlugify('foo bar');
+//=> 'foo-bar-2'
+
+countableSlugify.reset();
+
+countableSlugify('foo bar');
+//=> 'foo-bar'
+```
+
+#### Use case example of counter
+
+If, for example, you have a document with multiple sections where each subsection has an example.
+
+```md
+## Section 1
+
+### Example
+
+## Section 2
+
+### Example
+```
+
+You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
+
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
