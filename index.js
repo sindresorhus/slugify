@@ -37,7 +37,7 @@ module.exports = (string, options) => {
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 
 	const customReplacements = new Map(
-		[].concat(builtinOverridableReplacements).concat(options.customReplacements),
+		[].concat(builtinOverridableReplacements).concat(options.customReplacements).filter(Boolean),
 	);
 
 	string = transliterate(string, {customReplacements});
