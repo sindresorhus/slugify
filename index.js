@@ -26,21 +26,19 @@ module.exports = (string, options) => {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
 
-	options = {
+	options = Object.assign({
 		separator: '-',
 		lowercase: true,
 		decamelize: true,
 		customReplacements: [],
 		preserveLeadingUnderscore: false,
-		...options
-	};
+	}, options);
 
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 
-	const customReplacements = new Map([
-		...builtinOverridableReplacements,
-		...options.customReplacements
-	]);
+	const customReplacements = new Map(
+		[].concat(builtinOverridableReplacements).concat(options.customReplacements),
+	);
 
 	string = transliterate(string, {customReplacements});
 
