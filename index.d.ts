@@ -161,4 +161,3 @@ declare const slugify: {
 }
 
 export = slugify;
-
