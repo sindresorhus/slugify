@@ -133,29 +133,45 @@ slugify('fooBar 123 $#%');
 
 slugify('я люблю единорогов');
 //=> 'ya-lyublyu-edinorogov'
-
-const countableSlugify = slugify.counter();
-countableSlugify('Be a unicorn');
-// => 'be-a-unicorn'
-countableSlugify('Be a unicorn');
-// => 'be-a-unicorn-2'
-countableSlugify.reset();
-countableSlugify('Be a unicorn');
-// => 'be-a-unicorn'
 ```
 */
 declare const slugify: {
 	(
 		string: string,
 		options?: slugify.Options
-	): string;
+		): string;
 
+	/**
+	Adds a counter to ensure uniquenes.
+
+	@param string - String to slugify.
+
+	@example
+	```
+	import slugify = require('@sindresorhus/slugify');
+
+	const countableSlugify = slugify.counter();
+	countableSlugify('foo bar');
+	//=> 'foo-bar'
+
+	countableSlugify('foo bar');
+	//=> 'foo-bar-2'
+
+	countableSlugify.reset();
+
+	countableSlugify('foo bar');
+	//=> 'foo-bar'
+	```
+	*/
 	counter: () => {
 		(
 			string: string,
 			options?: slugify.Options
 		): string;
 
+		/**
+		 * Reset the counter
+		 */
 		reset(): void;
 	};
 }
