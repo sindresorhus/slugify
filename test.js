@@ -147,7 +147,7 @@ test('counter', t => {
 	t.is(countableSlugify('foo'), 'foo-3');
 	t.is(countableSlugify('foo'), 'foo-4');
 	t.is(countableSlugify('foo-1'), 'foo-1-4');
-	t.is(countableSlugify('foo-2'), 'foo-2-1'); // Or foo-2-2 ??
+	t.is(countableSlugify('foo-2'), 'foo-2-1');
 	t.is(countableSlugify('foo-2'), 'foo-2-2');
 	t.is(countableSlugify('foo-2-1'), 'foo-2-1-1');
 	t.is(countableSlugify('foo-2-1'), 'foo-2-1-2');
