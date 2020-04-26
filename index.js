@@ -71,7 +71,11 @@ const counter = () => {
 
 	const countable = (string, options) => {
 		string = slugify(string, options);
-		if (!string) return '';
+
+		if (!string) {
+			return '';
+		}
+
 		const stringLower = string.toLowerCase();
 		const numberless = occurrences.get(stringLower.replace(/(?:-\d+?)+?$/, '')) || 0;
 		const counter = occurrences.get(stringLower);
