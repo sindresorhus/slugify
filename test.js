@@ -163,4 +163,7 @@ test('counter', t => {
 	const countableSlugify2 = slugify.counter();
 	t.is(countableSlugify2('foo'), 'foo');
 	t.is(countableSlugify2('foo'), 'foo-2');
+
+	t.is(countableSlugify2(''), '');
+	t.is(countableSlugify2(''), '');
 });
