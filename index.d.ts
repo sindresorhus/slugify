@@ -167,11 +167,28 @@ declare const slugify: {
 		(
 			string: string,
 			options?: slugify.Options
-		): string;
+			): string;
 
 		/**
-		 * Reset the counter
-		 */
+		Reset the counter
+
+		@example
+		```
+		import slugify = require('@sindresorhus/slugify');
+
+		const countableSlugify = slugify.counter();
+		countableSlugify('foo bar');
+		//=> 'foo-bar'
+
+		countableSlugify('foo bar');
+		//=> 'foo-bar-2'
+
+		countableSlugify.reset();
+
+		countableSlugify('foo bar');
+		//=> 'foo-bar'
+		```
+		*/
 		reset(): void;
 	};
 }
