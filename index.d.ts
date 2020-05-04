@@ -113,36 +113,36 @@ declare namespace slugify {
 	}
 }
 
-/**
-Slugify a string.
-
-@param string - String to slugify.
-
-@example
-```
-import slugify = require('@sindresorhus/slugify');
-
-slugify('I ♥ Dogs');
-//=> 'i-love-dogs'
-
-slugify('  Déjà Vu!  ');
-//=> 'deja-vu'
-
-slugify('fooBar 123 $#%');
-//=> 'foo-bar-123'
-
-slugify('я люблю единорогов');
-//=> 'ya-lyublyu-edinorogov'
-```
-*/
 declare const slugify: {
+	/**
+	Slugify a string.
+
+	@param string - String to slugify.
+
+	@example
+	```
+	import slugify = require('@sindresorhus/slugify');
+
+	slugify('I ♥ Dogs');
+	//=> 'i-love-dogs'
+
+	slugify('  Déjà Vu!  ');
+	//=> 'deja-vu'
+
+	slugify('fooBar 123 $#%');
+	//=> 'foo-bar-123'
+
+	slugify('я люблю единорогов');
+	//=> 'ya-lyublyu-edinorogov'
+	```
+	*/
 	(
 		string: string,
 		options?: slugify.Options
-		): string;
+	): string;
 
 	/**
-	Adds a counter to ensure uniquenes.
+	Creates a counter to ensure uniqueness.
 
 	@param string - String to slugify.
 
@@ -167,10 +167,10 @@ declare const slugify: {
 		(
 			string: string,
 			options?: slugify.Options
-			): string;
+		): string;
 
 		/**
-		Reset the counter
+		Reset the counter.
 
 		@example
 		```
