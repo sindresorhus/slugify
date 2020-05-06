@@ -142,7 +142,7 @@ declare const slugify: {
 	): string;
 
 	/**
-	Creates a counter to ensure uniqueness.
+	Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
 
 	@param string - String to slugify.
 
@@ -162,6 +162,23 @@ declare const slugify: {
 	countableSlugify('foo bar');
 	//=> 'foo-bar'
 	```
+
+	Use case example of counter
+
+	If, for example, you have a document with multiple sections where each subsection has an example.
+
+	```
+	## Section 1
+
+	### Example
+
+	## Section 2
+
+	### Example
+
+	```
+
+	You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
 	*/
 	counter: () => {
 		(
