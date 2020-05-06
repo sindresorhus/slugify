@@ -203,6 +203,28 @@ If, for example, you have a document with multiple sections where each subsectio
 
 You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
 
+### slugify.reset()
+
+Reset the counter
+
+#### Example
+
+```js
+import slugify = require('@sindresorhus/slugify');
+
+const countableSlugify = slugify.counter();
+countableSlugify('foo bar');
+//=> 'foo-bar'
+
+countableSlugify('foo bar');
+//=> 'foo-bar-2'
+
+countableSlugify.reset();
+
+countableSlugify('foo bar');
+//=> 'foo-bar'
+```
+
 ## Related
 
 - [slugify-cli](https://github.com/sindresorhus/slugify-cli) - CLI for this module
