@@ -187,7 +187,7 @@ countableSlugify('foo bar');
 //=> 'foo-bar'
 ```
 
-#### Use case example of counter
+#### Use-case example of counter
 
 If, for example, you have a document with multiple sections where each subsection has an example.
 
@@ -210,9 +210,10 @@ Reset the counter
 #### Example
 
 ```js
-import slugify = require('@sindresorhus/slugify');
+const slugify = require('@sindresorhus/slugify');
 
 const countableSlugify = slugify.counter();
+
 countableSlugify('foo bar');
 //=> 'foo-bar'
 
