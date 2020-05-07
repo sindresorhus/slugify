@@ -115,33 +115,6 @@ declare namespace slugify {
 
 declare const slugify: {
 	/**
-	Slugify a string.
-
-	@param string - String to slugify.
-
-	@example
-	```
-	import slugify = require('@sindresorhus/slugify');
-
-	slugify('I ♥ Dogs');
-	//=> 'i-love-dogs'
-
-	slugify('  Déjà Vu!  ');
-	//=> 'deja-vu'
-
-	slugify('fooBar 123 $#%');
-	//=> 'foo-bar-123'
-
-	slugify('я люблю единорогов');
-	//=> 'ya-lyublyu-edinorogov'
-	```
-	*/
-	(
-		string: string,
-		options?: slugify.Options
-	): string;
-
-	/**
 	Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
 
 	@param string - String to slugify.
@@ -180,11 +153,6 @@ declare const slugify: {
 	You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
 	*/
 	counter: () => {
-		(
-			string: string,
-			options?: slugify.Options
-		): string;
-
 		/**
 		Reset the counter.
 
@@ -205,8 +173,40 @@ declare const slugify: {
 		//=> 'foo-bar'
 		```
 		*/
-		reset(): void;
+		reset: () => void;
+
+		(
+			string: string,
+			options?: slugify.Options
+		): string;
 	};
-}
+
+	/**
+	Slugify a string.
+
+	@param string - String to slugify.
+
+	@example
+	```
+	import slugify = require('@sindresorhus/slugify');
+
+	slugify('I ♥ Dogs');
+	//=> 'i-love-dogs'
+
+	slugify('  Déjà Vu!  ');
+	//=> 'deja-vu'
+
+	slugify('fooBar 123 $#%');
+	//=> 'foo-bar-123'
+
+	slugify('я люблю единорогов');
+	//=> 'ya-lyublyu-edinorogov'
+	```
+	*/
+	(
+		string: string,
+		options?: slugify.Options
+	): string;
+};
 
 export = slugify;
