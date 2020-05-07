@@ -163,7 +163,7 @@ declare const slugify: {
 	//=> 'foo-bar'
 	```
 
-	Use case example of counter
+	__Use case example of counter__
 
 	If, for example, you have a document with multiple sections where each subsection has an example.
 
@@ -175,7 +175,6 @@ declare const slugify: {
 	## Section 2
 
 	### Example
-
 	```
 
 	You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
