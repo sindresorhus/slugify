@@ -21,7 +21,7 @@ const removeMootSeparators = (string, separator) => {
 		.replace(new RegExp(`^${escapedSeparator}|${escapedSeparator}$`, 'g'), '');
 };
 
-module.exports = (string, options) => {
+const slugify = (string, options) => {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
@@ -65,3 +65,35 @@ module.exports = (string, options) => {
 
 	return string;
 };
+
+const counter = () => {
+	const occurrences = new Map();
+
+	const countable = (string, options) => {
+		string = slugify(string, options);
+
+		if (!string) {
+			return '';
+		}
+
+		const stringLower = string.toLowerCase();
+		const numberless = occurrences.get(stringLower.replace(/(?:-\d+?)+?$/, '')) || 0;
+		const counter = occurrences.get(stringLower);
+		occurrences.set(stringLower, typeof counter === 'number' ? counter + 1 : 1);
+		const newCounter = occurrences.get(stringLower) || 2;
+		if (newCounter >= 2 || numberless > 2) {
+			string = `${string}-${newCounter}`;
+		}
+
+		return string;
+	};
+
+	countable.reset = () => {
+		occurrences.clear();
+	};
+
+	return countable;
+};
+
+module.exports = slugify;
+module.exports.counter = counter;

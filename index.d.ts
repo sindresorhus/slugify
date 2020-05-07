@@ -113,31 +113,100 @@ declare namespace slugify {
 	}
 }
 
-/**
-Slugify a string.
+declare const slugify: {
+	/**
+	Slugify a string.
 
-@param string - String to slugify.
+	@param string - String to slugify.
 
-@example
-```
-import slugify = require('@sindresorhus/slugify');
+	@example
+	```
+	import slugify = require('@sindresorhus/slugify');
 
-slugify('I ♥ Dogs');
-//=> 'i-love-dogs'
+	slugify('I ♥ Dogs');
+	//=> 'i-love-dogs'
 
-slugify('  Déjà Vu!  ');
-//=> 'deja-vu'
+	slugify('  Déjà Vu!  ');
+	//=> 'deja-vu'
 
-slugify('fooBar 123 $#%');
-//=> 'foo-bar-123'
+	slugify('fooBar 123 $#%');
+	//=> 'foo-bar-123'
 
-slugify('я люблю единорогов');
-//=> 'ya-lyublyu-edinorogov'
-```
-*/
-declare function slugify(
-	string: string,
-	options?: slugify.Options
-): string;
+	slugify('я люблю единорогов');
+	//=> 'ya-lyublyu-edinorogov'
+	```
+	*/
+	(
+		string: string,
+		options?: slugify.Options
+	): string;
+
+	/**
+	Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
+
+	@param string - String to slugify.
+
+	@example
+	```
+	import slugify = require('@sindresorhus/slugify');
+
+	const countableSlugify = slugify.counter();
+	countableSlugify('foo bar');
+	//=> 'foo-bar'
+
+	countableSlugify('foo bar');
+	//=> 'foo-bar-2'
+
+	countableSlugify.reset();
+
+	countableSlugify('foo bar');
+	//=> 'foo-bar'
+	```
+
+	__Use case example of counter__
+
+	If, for example, you have a document with multiple sections where each subsection has an example.
+
+	```
+	## Section 1
+
+	### Example
+
+	## Section 2
+
+	### Example
+	```
+
+	You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
+	*/
+	counter: () => {
+		(
+			string: string,
+			options?: slugify.Options
+		): string;
+
+		/**
+		Reset the counter.
+
+		@example
+		```
+		import slugify = require('@sindresorhus/slugify');
+
+		const countableSlugify = slugify.counter();
+		countableSlugify('foo bar');
+		//=> 'foo-bar'
+
+		countableSlugify('foo bar');
+		//=> 'foo-bar-2'
+
+		countableSlugify.reset();
+
+		countableSlugify('foo bar');
+		//=> 'foo-bar'
+		```
+		*/
+		reset(): void;
+	};
+}
 
 export = slugify;
