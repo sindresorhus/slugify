@@ -23,7 +23,7 @@ test('main', t => {
 	t.is(slugify('foo&bar'), 'foo-and-bar');
 	t.is(slugify('foo360BAR'), 'foo360-bar');
 	t.is(slugify('FOO360'), 'foo-360');
-	t.is(slugify('FOObar'), 'foo-bar');
+	t.is(slugify('FOOBar'), 'foo-bar');
 });
 
 test('custom separator', t => {
