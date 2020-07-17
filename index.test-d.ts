@@ -10,4 +10,4 @@ expectType<string>(slugify('_foo_bar', {preserveLeadingUnderscore: true}));
 
 // Counter
 expectType<string>(slugify.counter()('I ♥ Dogs'));
-expectType<void>(slugify.counter().reset());
+expectType<void>(slugify.counter().reset()); // eslint-disable-line @typescript-eslint/no-invalid-void-type
