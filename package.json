@@ -41,7 +41,7 @@
 		"id"
 	],
 	"dependencies": {
-		"@sindresorhus/transliterate": "^0.1.0",
+		"@sindresorhus/transliterate": "^0.1.1",
 		"escape-string-regexp": "^4.0.0"
 	},
 	"devDependencies": {
