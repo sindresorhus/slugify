@@ -28,6 +28,7 @@ test('main', t => {
 
 test('custom separator', t => {
 	t.is(slugify('foo bar', {separator: '_'}), 'foo_bar');
+	t.is(slugify('aaa bbb', {separator: ''}), 'aaabbb');
 	t.is(slugify('BAR&baz', {separator: '_'}), 'bar_and_baz');
 	t.is(slugify('Déjà Vu!', {separator: '-'}), 'deja-vu');
 	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@'}), 'unicorns@and@rainbows');
