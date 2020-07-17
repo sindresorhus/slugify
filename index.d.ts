@@ -12,6 +12,9 @@ declare namespace slugify {
 
 		slugify('BAR and baz', {separator: '_'});
 		//=> 'bar_and_baz'
+
+		slugify('BAR and baz', {separator: ''});
+		//=> 'barandbaz'
 		```
 		*/
 		readonly separator?: string;
