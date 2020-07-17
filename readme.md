@@ -1,4 +1,4 @@
-# slugify [![Build Status](https://travis-ci.org/sindresorhus/slugify.svg?branch=master)](https://travis-ci.org/sindresorhus/slugify)
+# slugify [![Build Status](https://travis-ci.com/sindresorhus/slugify.svg?branch=master)](https://travis-ci.com/github/sindresorhus/slugify)
 
 > Slugify a string
 
