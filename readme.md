@@ -57,6 +57,9 @@ slugify('BAR and baz');
 
 slugify('BAR and baz', {separator: '_'});
 //=> 'bar_and_baz'
+
+slugify('BAR and baz', {separator: ''});
+//=> 'barandbaz'
 ```
 
 ##### lowercase
