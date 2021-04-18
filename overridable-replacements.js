@@ -1,7 +1,7 @@
-'use strict';
-
-module.exports = [
+const overridableReplacements = [
 	['&', ' and '],
 	['🦄', ' unicorn '],
 	['♥', ' love ']
 ];
+
+export default overridableReplacements;

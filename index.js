@@ -1,7 +1,6 @@
-'use strict';
-const escapeStringRegexp = require('escape-string-regexp');
-const transliterate = require('@sindresorhus/transliterate');
-const builtinOverridableReplacements = require('./overridable-replacements');
+import escapeStringRegexp from 'escape-string-regexp';
+import transliterate from '@sindresorhus/transliterate';
+import builtinOverridableReplacements from './overridable-replacements.js';
 
 const decamelize = string => {
 	return string
@@ -21,7 +20,7 @@ const removeMootSeparators = (string, separator) => {
 		.replace(new RegExp(`^${escapedSeparator}|${escapedSeparator}$`, 'g'), '');
 };
 
-const slugify = (string, options) => {
+export default function slugify(string, options) {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
 	}
@@ -66,9 +65,9 @@ const slugify = (string, options) => {
 	}
 
 	return string;
-};
+}
 
-const counter = () => {
+export function slugifyWithCounter() {
 	const occurrences = new Map();
 
 	const countable = (string, options) => {
@@ -95,7 +94,4 @@ const counter = () => {
 	};
 
 	return countable;
-};
-
-module.exports = slugify;
-module.exports.counter = counter;
+}

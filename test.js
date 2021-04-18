@@ -1,5 +1,5 @@
 import test from 'ava';
-import slugify from '.';
+import slugify, {slugifyWithCounter} from './index.js';
 
 test('main', t => {
 	t.is(slugify('Foo Bar'), 'foo-bar');
@@ -123,7 +123,7 @@ test('supports Turkish', t => {
 });
 
 test('supports Armenian', t => {
-	t.is(slugify('Ե ր ե ւ ա ն', {lowercase: false, separator: ' '}), 're ye v a n');
+	t.is(slugify('Ե ր ե ւ ա ն', {lowercase: false, separator: ' '}), 'Ye r ye a n');
 });
 
 test('leading underscore', t => {
@@ -134,37 +134,37 @@ test('leading underscore', t => {
 });
 
 test('counter', t => {
-	const countableSlugify = slugify.counter();
-	t.is(countableSlugify('foo bar'), 'foo-bar');
-	t.is(countableSlugify('foo bar'), 'foo-bar-2');
+	const slugify = slugifyWithCounter();
+	t.is(slugify('foo bar'), 'foo-bar');
+	t.is(slugify('foo bar'), 'foo-bar-2');
 
-	countableSlugify.reset();
+	slugify.reset();
 
-	t.is(countableSlugify('foo'), 'foo');
-	t.is(countableSlugify('foo'), 'foo-2');
-	t.is(countableSlugify('foo 1'), 'foo-1');
-	t.is(countableSlugify('foo-1'), 'foo-1-2');
-	t.is(countableSlugify('foo-1'), 'foo-1-3');
-	t.is(countableSlugify('foo'), 'foo-3');
-	t.is(countableSlugify('foo'), 'foo-4');
-	t.is(countableSlugify('foo-1'), 'foo-1-4');
-	t.is(countableSlugify('foo-2'), 'foo-2-1');
-	t.is(countableSlugify('foo-2'), 'foo-2-2');
-	t.is(countableSlugify('foo-2-1'), 'foo-2-1-1');
-	t.is(countableSlugify('foo-2-1'), 'foo-2-1-2');
-	t.is(countableSlugify('foo-11'), 'foo-11-1');
-	t.is(countableSlugify('foo-111'), 'foo-111-1');
-	t.is(countableSlugify('foo-111-1'), 'foo-111-1-1');
-	t.is(countableSlugify('fooCamelCase', {lowercase: false, decamelize: false}), 'fooCamelCase');
-	t.is(countableSlugify('fooCamelCase', {decamelize: false}), 'foocamelcase-2');
-	t.is(countableSlugify('_foo'), 'foo-5');
-	t.is(countableSlugify('_foo', {preserveLeadingUnderscore: true}), '_foo');
-	t.is(countableSlugify('_foo', {preserveLeadingUnderscore: true}), '_foo-2');
+	t.is(slugify('foo'), 'foo');
+	t.is(slugify('foo'), 'foo-2');
+	t.is(slugify('foo 1'), 'foo-1');
+	t.is(slugify('foo-1'), 'foo-1-2');
+	t.is(slugify('foo-1'), 'foo-1-3');
+	t.is(slugify('foo'), 'foo-3');
+	t.is(slugify('foo'), 'foo-4');
+	t.is(slugify('foo-1'), 'foo-1-4');
+	t.is(slugify('foo-2'), 'foo-2-1');
+	t.is(slugify('foo-2'), 'foo-2-2');
+	t.is(slugify('foo-2-1'), 'foo-2-1-1');
+	t.is(slugify('foo-2-1'), 'foo-2-1-2');
+	t.is(slugify('foo-11'), 'foo-11-1');
+	t.is(slugify('foo-111'), 'foo-111-1');
+	t.is(slugify('foo-111-1'), 'foo-111-1-1');
+	t.is(slugify('fooCamelCase', {lowercase: false, decamelize: false}), 'fooCamelCase');
+	t.is(slugify('fooCamelCase', {decamelize: false}), 'foocamelcase-2');
+	t.is(slugify('_foo'), 'foo-5');
+	t.is(slugify('_foo', {preserveLeadingUnderscore: true}), '_foo');
+	t.is(slugify('_foo', {preserveLeadingUnderscore: true}), '_foo-2');
 
-	const countableSlugify2 = slugify.counter();
-	t.is(countableSlugify2('foo'), 'foo');
-	t.is(countableSlugify2('foo'), 'foo-2');
+	const slugify2 = slugifyWithCounter();
+	t.is(slugify2('foo'), 'foo');
+	t.is(slugify2('foo'), 'foo-2');
 
-	t.is(countableSlugify2(''), '');
-	t.is(countableSlugify2(''), '');
+	t.is(slugify2(''), '');
+	t.is(slugify2(''), '');
 });

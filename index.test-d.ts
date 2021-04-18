@@ -1,5 +1,5 @@
 import {expectType} from 'tsd';
-import slugify = require('.');
+import slugify, {slugifyWithCounter} from './index.js';
 
 expectType<string>(slugify('I ♥ Dogs'));
 expectType<string>(slugify('BAR and baz', {separator: '_'}));
@@ -9,5 +9,4 @@ expectType<string>(slugify('I ♥ 🦄 & 🐶', {customReplacements: [['🐶', '
 expectType<string>(slugify('_foo_bar', {preserveLeadingUnderscore: true}));
 
 // Counter
-expectType<string>(slugify.counter()('I ♥ Dogs'));
-expectType<void>(slugify.counter().reset()); // eslint-disable-line @typescript-eslint/no-invalid-void-type
+expectType<string>(slugifyWithCounter()('I ♥ Dogs'));

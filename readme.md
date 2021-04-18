@@ -15,7 +15,7 @@ $ npm install @sindresorhus/slugify
 ## Usage
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('I ♥ Dogs');
 //=> 'i-love-dogs'
@@ -50,7 +50,7 @@ Type: `string`\
 Default: `'-'`
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('BAR and baz');
 //=> 'bar-and-baz'
@@ -70,7 +70,7 @@ Default: `true`
 Make the slug lowercase.
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('Déjà Vu!');
 //=> 'deja-vu'
@@ -87,7 +87,7 @@ Default: `true`
 Convert camelcase to separate words. Internally it does `fooBar` → `foo bar`.
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('fooBar');
 //=> 'foo-bar'
@@ -112,7 +112,7 @@ The replacements are run on the original string before any other transformations
 This only overrides a default replacement if you set an item with the same key, like `&`.
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('Foo@unicorn', {
 	customReplacements: [
@@ -125,7 +125,7 @@ slugify('Foo@unicorn', {
 Add a leading and trailing space to the replacement to have it separated by dashes:
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('foo@unicorn', {
 	customReplacements: [
@@ -138,7 +138,7 @@ slugify('foo@unicorn', {
 Another example:
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('I love 🐶', {
 	customReplacements: [
@@ -158,7 +158,7 @@ If your string starts with an underscore, it will be preserved in the slugified 
 Sometimes leading underscores are intentional, for example, filenames representing hidden paths on a website.
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import slugify from '@sindresorhus/slugify';
 
 slugify('_foo_bar');
 //=> 'foo-bar'
@@ -167,26 +167,26 @@ slugify('_foo_bar', {preserveLeadingUnderscore: true});
 //=> '_foo-bar'
 ```
 
-### slugify.counter()
+### slugifyWithCounter()
 
 Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
 
 #### Example
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import {slugifyWithCounter} from '@sindresorhus/slugify';
 
-const countableSlugify = slugify.counter();
+const slugify = slugifyWithCounter();
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar'
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar-2'
 
-countableSlugify.reset();
+slugify.reset();
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar'
 ```
 
@@ -204,7 +204,7 @@ If, for example, you have a document with multiple sections where each subsectio
 ### Example
 ```
 
-You can then use `slugify.counter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
+You can then use `slugifyWithCounter()` to generate unique HTML `id`'s to ensure anchors will link to the right headline.
 
 ### slugify.reset()
 
@@ -213,19 +213,19 @@ Reset the counter
 #### Example
 
 ```js
-const slugify = require('@sindresorhus/slugify');
+import {slugifyWithCounter} from '@sindresorhus/slugify';
 
-const countableSlugify = slugify.counter();
+const slugify = slugifyWithCounter();
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar'
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar-2'
 
-countableSlugify.reset();
+slugify.reset();
 
-countableSlugify('foo bar');
+slugify('foo bar');
 //=> 'foo-bar'
 ```
 
