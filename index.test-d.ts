@@ -7,6 +7,7 @@ expectType<string>(slugify('Déjà Vu!', {lowercase: false}));
 expectType<string>(slugify('fooBar', {decamelize: false}));
 expectType<string>(slugify('I ♥ 🦄 & 🐶', {customReplacements: [['🐶', 'dog']]}));
 expectType<string>(slugify('_foo_bar', {preserveLeadingUnderscore: true}));
+expectType<string>(slugify('foo-bar-', {preserveTrailingDash: true}));
 
 // Counter
 expectType<string>(slugifyWithCounter()('I ♥ Dogs'));

@@ -133,6 +133,11 @@ test('leading underscore', t => {
 	t.is(slugify('____-___foo__bar', {preserveLeadingUnderscore: true}), '_foo-bar');
 });
 
+test('trailing dash', t => {
+	t.is(slugify('foo bar-', {preserveTrailingDash: true}), 'foo-bar-');
+	t.is(slugify('foo-bar--', {preserveTrailingDash: true}), 'foo-bar-');
+});
+
 test('counter', t => {
 	const slugify = slugifyWithCounter();
 	t.is(slugify('foo bar'), 'foo-bar');

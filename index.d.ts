@@ -112,6 +112,26 @@ export interface Options {
 	```
 	*/
 	readonly preserveLeadingUnderscore?: boolean;
+
+	/**
+	If your string ends with a dash, it will be preserved in the slugified string.
+
+	Sometimes trailing dashes are intentional, for example, when using slugify on an input field used for setting a slug.
+
+	@default false
+
+	@example
+	```
+	import slugify from '@sindresorhus/slugify';
+
+	slugify('foo-bar-');
+	//=> 'foo-bar'
+
+	slugify('foo-bar-', {preserveTrailingDash: true});
+	//=> 'foo-bar-'
+	```
+	 */
+	readonly preserveTrailingDash?: boolean;
 }
 
 /**

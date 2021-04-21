@@ -167,6 +167,25 @@ slugify('_foo_bar', {preserveLeadingUnderscore: true});
 //=> '_foo-bar'
 ```
 
+##### preserveTrailingDash
+
+Type: `boolean`\
+Default: `false`
+
+If your string ends with a dash, it will be preserved in the slugified string.
+
+Sometimes trailing dashes are intentional, for example, when using slugify on an input field used for setting a slug.
+
+```js
+import slugify from '@sindresorhus/slugify';
+
+slugify('foo-bar-');
+//=> 'foo-bar'
+
+slugify('foo-bar-', {preserveTrailingDash: true});
+//=> 'foo-bar-'
+```
+
 ### slugifyWithCounter()
 
 Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
