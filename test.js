@@ -136,6 +136,9 @@ test('leading underscore', t => {
 test('trailing dash', t => {
 	t.is(slugify('foo bar-', {preserveTrailingDash: true}), 'foo-bar-');
 	t.is(slugify('foo-bar--', {preserveTrailingDash: true}), 'foo-bar-');
+	t.is(slugify('foo-bar -', {preserveTrailingDash: true}), 'foo-bar-');
+	t.is(slugify('foo-bar - ', {preserveTrailingDash: true}), 'foo-bar');
+	t.is(slugify('foo-bar ', {preserveTrailingDash: true}), 'foo-bar');
 });
 
 test('counter', t => {
