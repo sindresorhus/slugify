@@ -163,7 +163,7 @@ export interface CountableSlugify {
 	reset: () => void;
 
 	/**
-	Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurences of the same string.
+	Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurrences of the same string.
 
 	@param string - String to slugify.
 
