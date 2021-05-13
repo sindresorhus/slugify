@@ -31,10 +31,12 @@ export default function slugify(string, options) {
 		decamelize: true,
 		customReplacements: [],
 		preserveLeadingUnderscore: false,
+		preserveTrailingDash: false,
 		...options
 	};
 
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
+	const shouldAppendDash = options.preserveTrailingDash && string.endsWith('-');
 
 	const customReplacements = new Map([
 		...builtinOverridableReplacements,
@@ -62,6 +64,10 @@ export default function slugify(string, options) {
 
 	if (shouldPrependUnderscore) {
 		string = `_${string}`;
+	}
+
+	if (shouldAppendDash) {
+		string = `${string}-`;
 	}
 
 	return string;
