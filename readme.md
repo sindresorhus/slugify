@@ -174,7 +174,7 @@ Default: `false`
 
 If your string ends with a dash, it will be preserved in the slugified string.
 
-Sometimes trailing dashes are intentional, for example, when using slugify on an input field used for setting a slug.
+For example, using slugify on an input field would allow for validation while not preventing the user from writing a slug.
 
 ```js
 import slugify from '@sindresorhus/slugify';
