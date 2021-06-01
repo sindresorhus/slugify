@@ -30,6 +30,7 @@ export default function slugify(string, options) {
 		lowercase: true,
 		decamelize: true,
 		customReplacements: [],
+		preserveCharacters: '',
 		preserveLeadingUnderscore: false,
 		preserveTrailingDash: false,
 		...options
@@ -49,11 +50,11 @@ export default function slugify(string, options) {
 		string = decamelize(string);
 	}
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
+	let patternSlug = new RegExp(`[^a-zA-Z0-9${options.preserveCharacters}]+`, 'g');
 
 	if (options.lowercase) {
 		string = string.toLowerCase();
-		patternSlug = /[^a-z\d]+/g;
+		patternSlug = new RegExp(`[^a-z0-9${options.preserveCharacters}]+`, 'g');
 	}
 
 	string = string.replace(patternSlug, options.separator);
