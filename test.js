@@ -141,6 +141,14 @@ test('trailing dash', t => {
 	t.is(slugify('foo-bar ', {preserveTrailingDash: true}), 'foo-bar');
 });
 
+test('preserved characters', t => {
+	t.is(slugify('foo_bar', {preserveCharacters: ['_']}), 'foo_bar');
+	t.is(slugify('foo__bar', {preserveCharacters: ['_']}), 'foo__bar');
+	t.is(slugify('_foo_bar_', {preserveCharacters: ['_']}), '_foo_bar_');
+	t.is(slugify('_ foo _ bar _', {preserveCharacters: ['_']}), '_-foo-_-bar-_');
+	t.is(slugify('foo_bar baz', {preserveCharacters: ['_']}), 'foo_bar-baz');
+});
+
 test('counter', t => {
 	const slugify = slugifyWithCounter();
 	t.is(slugify('foo bar'), 'foo-bar');

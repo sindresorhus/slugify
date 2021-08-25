@@ -132,6 +132,31 @@ export interface Options {
 	```
 	 */
 	readonly preserveTrailingDash?: boolean;
+
+	/**
+	Add an array of characters that should be considered as a valid part of a slug and therefore preserved.
+
+	All custom replacement transformations are happening before that. So replaced characters wouldn't be preserved.
+
+	Use this option with caution because it may lead to an invalid url string.
+
+	Using this option with `preserveLeadingUnderscore` or `preserveTrailingDash` options may lead to unexpected results.
+	Because leading underscore and trailing dash transformations happening afterwards.
+
+	@default []
+
+	@example
+	```
+	import slugify from '@sindresorhus/slugify';
+
+	slugify('foo_bar_');
+	//=> 'foo-bar'
+
+	slugify('foo_bar_', {preserveCharacters: ['_']});
+	//=> 'foo_bar_'
+	```
+	 */
+	readonly preserveCharacters?: readonly string[];
 }
 
 /**

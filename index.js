@@ -32,6 +32,7 @@ export default function slugify(string, options) {
 		customReplacements: [],
 		preserveLeadingUnderscore: false,
 		preserveTrailingDash: false,
+		preserveCharacters: [],
 		...options
 	};
 
@@ -49,14 +50,22 @@ export default function slugify(string, options) {
 		string = decamelize(string);
 	}
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
+	let patternCharacters = ['a-z', 'A-Z', '\\d'];
 
 	if (options.lowercase) {
 		string = string.toLowerCase();
-		patternSlug = /[^a-z\d]+/g;
+		patternCharacters = patternCharacters.filter(char => char !== 'A-Z');
 	}
 
+	if (options.preserveCharacters.length > 0) {
+		const preserveCharacters = options.preserveCharacters.map(char => escapeStringRegexp(char));
+		patternCharacters = [...patternCharacters, ...preserveCharacters];
+	}
+
+	const patternSlug = new RegExp(`[^${patternCharacters.join('')}]`,'g')
+
 	string = string.replace(patternSlug, options.separator);
+
 	string = string.replace(/\\/g, '');
 	if (options.separator) {
 		string = removeMootSeparators(string, options.separator);
