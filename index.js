@@ -9,7 +9,7 @@ const decamelize = string => {
 		.replace(/([a-z\d]+)([A-Z]{2,})/g, '$1 $2')
 
 		.replace(/([a-z\d])([A-Z])/g, '$1 $2')
-		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
+		.replace(/([A-Z]+)([A-Z][a-rt-z\d]+)/g, '$1 $2');
 };
 
 const removeMootSeparators = (string, separator) => {
