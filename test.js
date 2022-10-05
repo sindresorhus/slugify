@@ -25,6 +25,7 @@ test('main', t => {
 	t.is(slugify('FOO360'), 'foo-360');
 	t.is(slugify('FOOBar'), 'foo-bar');
 	t.is(slugify('APIs'), 'apis');
+	t.is(slugify('APISection'), 'api-section');
 	t.is(slugify('Util APIs'), 'util-apis');
 });
 
