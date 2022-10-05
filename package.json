@@ -50,5 +50,10 @@
 		"ava": "^3.15.0",
 		"tsd": "^0.14.0",
 		"xo": "^0.38.2"
+	},
+	"xo": {
+		"rules": {
+			"@typescript-eslint/member-ordering": "off"
+		}
 	}
 }
