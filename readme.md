@@ -186,6 +186,22 @@ slugify('foo-bar-', {preserveTrailingDash: true});
 //=> 'foo-bar-'
 ```
 
+##### preserveCharacters
+
+Type: `Array<string>`\
+default: `[]`
+
+Preserve particular characters so long as they are **not** the separator.
+
+For example, if you wanted to slugify urls, but preserve the HTML fragment `#`, and `.` characters.
+
+```js
+import slugify from '@sindresorhus/slugify';
+
+slugify('foo_bar#baz', {preserveCharacters: ['#']});
+//=> 'foo-bar#baz'
+```
+
 ### slugifyWithCounter()
 
 Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurrences of the same string.

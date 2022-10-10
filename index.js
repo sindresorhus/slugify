@@ -22,6 +22,29 @@ const removeMootSeparators = (string, separator) => {
 		.replace(new RegExp(`^${escapedSeparator}|${escapedSeparator}$`, 'g'), '');
 };
 
+const buildPatternSlug = options => {
+	// The allowSet contains some url-safe non-alphanumeric characters
+	const allowSet = new Set(['.', '#', '-', '_']);
+	let negationSetPattern = 'a-z\\d';
+	if (!options.lowercase) {
+		negationSetPattern += 'A-Z';
+	}
+
+	if (options.preserveCharacters.length > 0) {
+		for (const c of options.preserveCharacters) {
+			if (c === options.separator) {
+				throw new Error(`Separator, ${options.separator}, cannot be included in preserved characters, ${options.preserveCharacters}`);
+			} else if (allowSet.has(c)) {
+				negationSetPattern += escapeStringRegexp(c);
+			}
+		}
+	}
+
+	const negationSet = `[^${negationSetPattern}]+`;
+
+	return new RegExp(negationSet, 'g');
+};
+
 export default function slugify(string, options) {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
@@ -34,6 +57,7 @@ export default function slugify(string, options) {
 		customReplacements: [],
 		preserveLeadingUnderscore: false,
 		preserveTrailingDash: false,
+		preserveCharacters: [],
 		...options
 	};
 
@@ -51,11 +75,10 @@ export default function slugify(string, options) {
 		string = decamelize(string);
 	}
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
+	const patternSlug = buildPatternSlug(options);
 
 	if (options.lowercase) {
 		string = string.toLowerCase();
-		patternSlug = /[^a-z\d]+/g;
 	}
 
 	string = string.replace(patternSlug, options.separator);
