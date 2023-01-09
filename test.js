@@ -194,6 +194,4 @@ test('preserve characters', t => {
 	t.throws(() => {
 		slugify('foo', {separator: '.', preserveCharacters: ['.']});
 	});
-	// Not implicit-whitelist-approved
-	t.is(slugify('foo$bar', {preserveCharacters: ['$']}), 'foo-bar');
 });

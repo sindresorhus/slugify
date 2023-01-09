@@ -188,8 +188,8 @@ slugify('foo-bar-', {preserveTrailingDash: true});
 
 ##### preserveCharacters
 
-Type: `Array<string>`\
-default: `[]`
+Type: `string[]`\
+Default: `[]`
 
 Preserve particular characters so long as they are **not** the separator.
 

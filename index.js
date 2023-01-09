@@ -23,19 +23,15 @@ const removeMootSeparators = (string, separator) => {
 };
 
 const buildPatternSlug = options => {
-	// The allowSet contains some url-safe non-alphanumeric characters
-	const allowSet = new Set(['.', '#', '-', '_']);
 	let negationSetPattern = 'a-z\\d';
-	if (!options.lowercase) {
-		negationSetPattern += 'A-Z';
-	}
+	negationSetPattern += options.lowercase ? '' : 'A-Z';
 
 	if (options.preserveCharacters.length > 0) {
-		for (const c of options.preserveCharacters) {
-			if (c === options.separator) {
+		for (const char of options.preserveCharacters) {
+			if (char === options.separator) {
 				throw new Error(`Separator, ${options.separator}, cannot be included in preserved characters, ${options.preserveCharacters}`);
-			} else if (allowSet.has(c)) {
-				negationSetPattern += escapeStringRegexp(c);
+			} else {
+				negationSetPattern += escapeStringRegexp(char);
 			}
 		}
 	}
