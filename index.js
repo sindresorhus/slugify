@@ -60,7 +60,7 @@ export default function slugify(string, options) {
 
 	string = string.replace(patternSlug, options.separator);
 	string = string.replace(/\\/g, '');
-	
+
 	// TODO: Code comment.
 	string = string.replace(/([a-zA-Z\d]+)-([ts])(-|$)/g, '$1$2$3');
 
