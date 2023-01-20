@@ -27,18 +27,16 @@ const buildPatternSlug = options => {
 	negationSetPattern += options.lowercase ? '' : 'A-Z';
 
 	if (options.preserveCharacters.length > 0) {
-		for (const char of options.preserveCharacters) {
-			if (char === options.separator) {
-				throw new Error(`Separator, ${options.separator}, cannot be included in preserved characters, ${options.preserveCharacters}`);
-			} else {
-				negationSetPattern += escapeStringRegexp(char);
+		for (const character of options.preserveCharacters) {
+			if (character === options.separator) {
+				throw new Error(`The separator character \`${options.separator}\` cannot be included in preserved characters: ${options.preserveCharacters}`);
 			}
+
+			negationSetPattern += escapeStringRegexp(character);
 		}
 	}
 
-	const negationSet = `[^${negationSetPattern}]+`;
-
-	return new RegExp(negationSet, 'g');
+	return new RegExp(`[^${negationSetPattern}]+`, 'g');
 };
 
 export default function slugify(string, options) {
