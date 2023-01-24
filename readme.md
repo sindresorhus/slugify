@@ -195,7 +195,7 @@ Preserve certain characters.
 
 It cannot contain the `separator`.
 
-For example, if you wanted to slugify urls, but preserve the HTML fragment `#`, and `.` characters.
+For example, if you want to slugify URLs, but preserve the HTML fragment `#` and `.` characters.
 
 ```js
 import slugify from '@sindresorhus/slugify';
