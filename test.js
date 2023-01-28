@@ -29,6 +29,13 @@ test('main', t => {
 	t.is(slugify('Util APIs'), 'util-apis');
 });
 
+test('possessives and contractions', t => {
+	t.is(slugify('Conway\'s Law'), 'conways-law');
+	t.is(slugify('Conway\'s'), 'conways');
+	t.is(slugify('Don\'t Repeat Yourself'), 'dont-repeat-yourself');
+	t.is(slugify('my parents\' rules'), 'my-parents-rules');
+});
+
 test('custom separator', t => {
 	t.is(slugify('foo bar', {separator: '_'}), 'foo_bar');
 	t.is(slugify('aaa bbb', {separator: ''}), 'aaabbb');
