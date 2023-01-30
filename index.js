@@ -22,6 +22,23 @@ const removeMootSeparators = (string, separator) => {
 		.replace(new RegExp(`^${escapedSeparator}|${escapedSeparator}$`, 'g'), '');
 };
 
+const buildPatternSlug = options => {
+	let negationSetPattern = 'a-z\\d';
+	negationSetPattern += options.lowercase ? '' : 'A-Z';
+
+	if (options.preserveCharacters.length > 0) {
+		for (const character of options.preserveCharacters) {
+			if (character === options.separator) {
+				throw new Error(`The separator character \`${options.separator}\` cannot be included in preserved characters: ${options.preserveCharacters}`);
+			}
+
+			negationSetPattern += escapeStringRegexp(character);
+		}
+	}
+
+	return new RegExp(`[^${negationSetPattern}]+`, 'g');
+};
+
 export default function slugify(string, options) {
 	if (typeof string !== 'string') {
 		throw new TypeError(`Expected a string, got \`${typeof string}\``);
@@ -34,6 +51,7 @@ export default function slugify(string, options) {
 		customReplacements: [],
 		preserveLeadingUnderscore: false,
 		preserveTrailingDash: false,
+		preserveCharacters: [],
 		...options
 	};
 
@@ -51,11 +69,10 @@ export default function slugify(string, options) {
 		string = decamelize(string);
 	}
 
-	let patternSlug = /[^a-zA-Z\d]+/g;
+	const patternSlug = buildPatternSlug(options);
 
 	if (options.lowercase) {
 		string = string.toLowerCase();
-		patternSlug = /[^a-z\d]+/g;
 	}
 
 	string = string.replace(patternSlug, options.separator);

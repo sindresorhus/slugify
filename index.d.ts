@@ -132,6 +132,25 @@ export interface Options {
 	```
 	 */
 	readonly preserveTrailingDash?: boolean;
+
+	/**
+	Preserve certain characters.
+
+	It cannot contain the `separator`.
+
+	For example, if you want to slugify URLs, but preserve the HTML fragment `#` character, you could set `preserveCharacters: ['#']`.
+
+	@default []
+
+	@example
+	```
+	import slugify from '@sindresorhus/slugify';
+
+	slugify('foo_bar#baz', {preserveCharacters: ['#']});
+	//=> 'foo-bar#baz'
+	```
+	*/
+	readonly preserveCharacters?: string[];
 }
 
 /**

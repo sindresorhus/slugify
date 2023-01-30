@@ -186,3 +186,19 @@ test('counter', t => {
 	t.is(slugify2(''), '');
 	t.is(slugify2(''), '');
 });
+
+test('preserve characters', t => {
+	t.is(slugify('foo#bar', {preserveCharacters: []}), 'foo-bar');
+	t.is(slugify('foo.bar', {preserveCharacters: []}), 'foo-bar');
+	t.is(slugify('foo?bar ', {preserveCharacters: ['#']}), 'foo-bar');
+	t.is(slugify('foo#bar', {preserveCharacters: ['#']}), 'foo#bar');
+	t.is(slugify('foo_bar#baz', {preserveCharacters: ['#']}), 'foo-bar#baz');
+	t.is(slugify('foo.bar#baz-quux', {preserveCharacters: ['.', '#']}), 'foo.bar#baz-quux');
+	t.is(slugify('foo.bar#baz-quux', {separator: '.', preserveCharacters: ['-']}), 'foo.bar.baz-quux');
+	t.throws(() => {
+		slugify('foo', {separator: '-', preserveCharacters: ['-']});
+	});
+	t.throws(() => {
+		slugify('foo', {separator: '.', preserveCharacters: ['.']});
+	});
+});
