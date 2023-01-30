@@ -143,13 +143,13 @@ export interface Options {
 	@default []
 
 	@example
-	```js
+	```
 	import slugify from '@sindresorhus/slugify';
 
 	slugify('foo_bar#baz', {preserveCharacters: ['#']});
 	//=> 'foo-bar#baz'
 	```
-	 */
+	*/
 	readonly preserveCharacters?: string[];
 }
 
