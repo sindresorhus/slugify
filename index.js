@@ -75,12 +75,12 @@ export default function slugify(string, options) {
 		string = string.toLowerCase();
 	}
 
+	// Detect contractions/possessives by looking for any word followed by a `'t`
+	// or `'s` in isolation and then remove it.
+	string = string.replace(/([a-zA-Z\d]+)'([ts])(\s|$)/g, '$1$2$3');
+
 	string = string.replace(patternSlug, options.separator);
 	string = string.replace(/\\/g, '');
-
-	// Detect contractions/possessives by looking for any word followed by a `-t`
-	// or `-s` in isolation and then remove it.
-	string = string.replace(/([a-zA-Z\d]+)-([ts])(-|$)/g, '$1$2$3');
 
 	if (options.separator) {
 		string = removeMootSeparators(string, options.separator);
