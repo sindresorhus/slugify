@@ -34,6 +34,7 @@ test('possessives and contractions', t => {
 	t.is(slugify('Conway\'s'), 'conways');
 	t.is(slugify('Don\'t Repeat Yourself'), 'dont-repeat-yourself');
 	t.is(slugify('my parents\' rules'), 'my-parents-rules');
+	t.is(slugify('it-s-hould-not-modify-t-his'), 'it-s-hould-not-modify-t-his');
 });
 
 test('custom separator', t => {
