@@ -1,100 +1,135 @@
+```js
 import test from 'ava';
 import slugify, {slugifyWithCounter} from './index.js';
 
+const runTestCases = (t, cases, slugifyFunc) => {
+	cases.forEach(([input, expected]) => {
+		t.is(slugifyFunc(input), expected);
+	});
+};
+
+const runCustomSeparatorTests = (t, cases) => {
+	cases.forEach(([input, separator, expected]) => {
+		t.is(slugify(input, {separator}), expected);
+	});
+};
+
+const runCustomReplacementsTests = (t, cases) => {
+	cases.forEach(([input, replacements, expected]) => {
+		t.is(slugify(input, {customReplacements: replacements}), expected);
+	});
+};
+
+const runLowercaseOptionTests = (t, cases) => {
+	cases.forEach(([input, separator, lowercase, expected]) => {
+		if (separator) {
+			t.is(slugify(input, {separator, lowercase}), expected);
+		} else {
+			t.is(slugify(input, {lowercase}), expected);
+		}
+	});
+};
+
+const runLeadingTrailingTests = (t, cases, func) => {
+	cases.forEach(([input, flag, expected]) => {
+		t.is(slugify(input, {[func]: flag}), expected);
+	});
+};
+
+const runCounterTests = (t, slugifyCounter, cases) => {
+	cases.forEach(([input, expected]) => {
+		t.is(slugifyCounter(input), expected);
+	});
+};
+
 test('main', t => {
-	t.is(slugify('Foo Bar'), 'foo-bar');
-	t.is(slugify('foo bar baz'), 'foo-bar-baz');
-	t.is(slugify('foo bar '), 'foo-bar');
-	t.is(slugify('       foo bar'), 'foo-bar');
-	t.is(slugify('[foo] [bar]'), 'foo-bar');
-	t.is(slugify('Foo ÿ'), 'foo-y');
-	t.is(slugify('FooBar'), 'foo-bar');
-	t.is(slugify('fooBar'), 'foo-bar');
-	t.is(slugify('UNICORNS AND RAINBOWS'), 'unicorns-and-rainbows');
-	t.is(slugify('Foo & Bar'), 'foo-and-bar');
-	t.is(slugify('Foo & Bar'), 'foo-and-bar');
-	t.is(slugify('Hællæ, hva skjera?'), 'haellae-hva-skjera');
-	t.is(slugify('Foo Bar2'), 'foo-bar2');
-	t.is(slugify('I ♥ Dogs'), 'i-love-dogs');
-	t.is(slugify('Déjà Vu!'), 'deja-vu');
-	t.is(slugify('fooBar 123 $#%'), 'foo-bar-123');
-	t.is(slugify('foo🦄'), 'foo-unicorn');
-	t.is(slugify('🦄🦄🦄'), 'unicorn-unicorn-unicorn');
-	t.is(slugify('foo&bar'), 'foo-and-bar');
-	t.is(slugify('foo360BAR'), 'foo360-bar');
-	t.is(slugify('FOO360'), 'foo-360');
-	t.is(slugify('FOOBar'), 'foo-bar');
-	t.is(slugify('APIs'), 'apis');
-	t.is(slugify('APISection'), 'api-section');
-	t.is(slugify('Util APIs'), 'util-apis');
+	const cases = [
+		['Foo Bar', 'foo-bar'],
+		['foo bar baz', 'foo-bar-baz'],
+		['foo bar ', 'foo-bar'],
+		['       foo bar', 'foo-bar'],
+		['[foo] [bar]', 'foo-bar'],
+		['Foo ÿ', 'foo-y'],
+		['FooBar', 'foo-bar'],
+		['fooBar', 'foo-bar'],
+		['UNICORNS AND RAINBOWS', 'unicorns-and-rainbows'],
+		['Foo & Bar', 'foo-and-bar'],
+		['Hællæ, hva skjera?', 'haellae-hva-skjera'],
+		['Foo Bar2', 'foo-bar2'],
+		['I ♥ Dogs', 'i-love-dogs'],
+		['Déjà Vu!', 'deja-vu'],
+		['fooBar 123 $#%', 'foo-bar-123'],
+		['foo🦄', 'foo-unicorn'],
+		['🦄🦄🦄', 'unicorn-unicorn-unicorn'],
+		['foo&bar', 'foo-and-bar'],
+		['foo360BAR', 'foo360-bar'],
+		['FOO360', 'foo-360'],
+		['FOOBar', 'foo-bar'],
+		['APIs', 'apis'],
+		['APISection', 'api-section'],
+		['Util APIs', 'util-apis'],
+	];
+
+	runTestCases(t, cases, slugify);
 });
 
 test('possessives and contractions', t => {
-	t.is(slugify('Conway\'s Law'), 'conways-law');
-	t.is(slugify('Conway\'s'), 'conways');
-	t.is(slugify('Don\'t Repeat Yourself'), 'dont-repeat-yourself');
-	t.is(slugify('my parents\' rules'), 'my-parents-rules');
-	t.is(slugify('it-s-hould-not-modify-t-his'), 'it-s-hould-not-modify-t-his');
+	const cases = [
+		["Conway's Law", 'conways-law'],
+		["Conway's", 'conways'],
+		["Don't Repeat Yourself", 'dont-repeat-yourself'],
+		["my parents' rules", 'my-parents-rules'],
+		["it-s-hould-not-modify-t-his", 'it-s-hould-not-modify-t-his'],
+	];
+
+	runTestCases(t, cases, slugify);
 });
 
 test('custom separator', t => {
-	t.is(slugify('foo bar', {separator: '_'}), 'foo_bar');
-	t.is(slugify('aaa bbb', {separator: ''}), 'aaabbb');
-	t.is(slugify('BAR&baz', {separator: '_'}), 'bar_and_baz');
-	t.is(slugify('Déjà Vu!', {separator: '-'}), 'deja-vu');
-	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@'}), 'unicorns@and@rainbows');
-	t.is(slugify('[foo] [bar]', {separator: '.'}), 'foo.bar', 'escape regexp special characters');
+	const cases = [
+		['foo bar', '_', 'foo_bar'],
+		['aaa bbb', '', 'aaabbb'],
+		['BAR&baz', '_', 'bar_and_baz'],
+		['Déjà Vu!', '-', 'deja-vu'],
+		['UNICORNS AND RAINBOWS!', '@', 'unicorns@and@rainbows'],
+		['[foo] [bar]', '.', 'foo.bar'],
+	];
+
+	runCustomSeparatorTests(t, cases);
 });
 
 test('custom replacements', t => {
-	t.is(slugify('foo | bar', {
-		customReplacements: [
-			['|', ' or ']
-		]
-	}), 'foo-or-bar');
+	const cases = [
+		['foo | bar', [['|', ' or ']], 'foo-or-bar'],
+		['10 | 20 %', [['|', ' or '], ['%', ' percent ']], '10-or-20-percent'],
+		['I ♥ 🦄', [['♥', ' amour '], ['🦄', ' licorne ']], 'i-amour-licorne'],
+		['x.y.z', [['.', '']], 'xyz'],
+		['Zürich', [['ä', 'ae'], ['ö', 'oe'], ['ü', 'ue'], ['ß', 'ss']], 'zuerich'],
+	];
 
-	t.is(slugify('10 | 20 %', {
-		customReplacements: [
-			['|', ' or '],
-			['%', ' percent ']
-		]
-	}), '10-or-20-percent');
-
-	t.is(slugify('I ♥ 🦄', {
-		customReplacements: [
-			['♥', ' amour '],
-			['🦄', ' licorne ']
-		]
-	}), 'i-amour-licorne');
-
-	t.is(slugify('x.y.z', {
-		customReplacements: [
-			['.', '']
-		]
-	}), 'xyz');
-
-	t.is(slugify('Zürich', {
-		customReplacements: [
-			['ä', 'ae'],
-			['ö', 'oe'],
-			['ü', 'ue'],
-			['ß', 'ss']
-		]
-	}), 'zuerich');
+	runCustomReplacementsTests(t, cases);
 });
 
 test('lowercase option', t => {
-	t.is(slugify('foo bar', {lowercase: false}), 'foo-bar');
-	t.is(slugify('BAR&baz', {lowercase: false}), 'BAR-and-baz');
-	t.is(slugify('Déjà Vu!', {separator: '_', lowercase: false}), 'Deja_Vu');
-	t.is(slugify('UNICORNS AND RAINBOWS!', {separator: '@', lowercase: false}), 'UNICORNS@AND@RAINBOWS');
-	t.is(slugify('[foo] [bar]', {separator: '.', lowercase: false}), 'foo.bar', 'escape regexp special characters');
-	t.is(slugify('Foo🦄', {lowercase: false}), 'Foo-unicorn');
+	const cases = [
+		['foo bar', false, 'foo-bar'],
+		['BAR&baz', false, 'BAR-and-baz'],
+		['Déjà Vu!', true, 'Deja_Vu'],
+		['UNICORNS AND RAINBOWS!', '@', false, 'UNICORNS@AND@RAINBOWS'],
+		['[foo] [bar]', '.', false, 'foo.bar'],
+		['Foo🦄', false, 'Foo-unicorn'],
+	];
+
+	runLowercaseOptionTests(t, cases);
 });
 
 test('decamelize option', t => {
-	t.is(slugify('fooBar'), 'foo-bar');
-	t.is(slugify('fooBar', {decamelize: false}), 'foobar');
+	const cases = [
+		['fooBar', 'foo-bar'],
+		['fooBar', false, 'foobar'],
+	];
+
+	runTestCases(t, cases, slugify);
 });
 
 test('supports German umlauts', t => {
@@ -138,64 +173,80 @@ test('supports Armenian', t => {
 });
 
 test('leading underscore', t => {
-	t.is(slugify('_foo bar', {preserveLeadingUnderscore: true}), '_foo-bar');
-	t.is(slugify('_foo_bar', {preserveLeadingUnderscore: true}), '_foo-bar');
-	t.is(slugify('__foo__bar', {preserveLeadingUnderscore: true}), '_foo-bar');
-	t.is(slugify('____-___foo__bar', {preserveLeadingUnderscore: true}), '_foo-bar');
+	const cases = [
+		['_foo bar', true, '_foo-bar'],
+		['_foo_bar', true, '_foo-bar'],
+		['__foo__bar', true, '_foo-bar'],
+		['____-___foo__bar', true, '_foo-bar'],
+	];
+
+	runLeadingTrailingTests(t, cases, 'preserveLeadingUnderscore');
 });
 
 test('trailing dash', t => {
-	t.is(slugify('foo bar-', {preserveTrailingDash: true}), 'foo-bar-');
-	t.is(slugify('foo-bar--', {preserveTrailingDash: true}), 'foo-bar-');
-	t.is(slugify('foo-bar -', {preserveTrailingDash: true}), 'foo-bar-');
-	t.is(slugify('foo-bar - ', {preserveTrailingDash: true}), 'foo-bar');
-	t.is(slugify('foo-bar ', {preserveTrailingDash: true}), 'foo-bar');
+	const cases = [
+		['foo bar-', true, 'foo-bar-'],
+		['foo-bar--', true, 'foo-bar-'],
+		['foo-bar -', true, 'foo-bar-'],
+		['foo-bar - ', true, 'foo-bar'],
+		['foo-bar ', true, 'foo-bar'],
+	];
+
+	runLeadingTrailingTests(t, cases, 'preserveTrailingDash');
 });
 
 test('counter', t => {
-	const slugify = slugifyWithCounter();
-	t.is(slugify('foo bar'), 'foo-bar');
-	t.is(slugify('foo bar'), 'foo-bar-2');
+	const slugifyCounter = slugifyWithCounter();
+	t.is(slugifyCounter('foo bar'), 'foo-bar');
+	t.is(slugifyCounter('foo bar'), 'foo-bar-2');
 
-	slugify.reset();
+	slugifyCounter.reset();
 
-	t.is(slugify('foo'), 'foo');
-	t.is(slugify('foo'), 'foo-2');
-	t.is(slugify('foo 1'), 'foo-1');
-	t.is(slugify('foo-1'), 'foo-1-2');
-	t.is(slugify('foo-1'), 'foo-1-3');
-	t.is(slugify('foo'), 'foo-3');
-	t.is(slugify('foo'), 'foo-4');
-	t.is(slugify('foo-1'), 'foo-1-4');
-	t.is(slugify('foo-2'), 'foo-2-1');
-	t.is(slugify('foo-2'), 'foo-2-2');
-	t.is(slugify('foo-2-1'), 'foo-2-1-1');
-	t.is(slugify('foo-2-1'), 'foo-2-1-2');
-	t.is(slugify('foo-11'), 'foo-11-1');
-	t.is(slugify('foo-111'), 'foo-111-1');
-	t.is(slugify('foo-111-1'), 'foo-111-1-1');
-	t.is(slugify('fooCamelCase', {lowercase: false, decamelize: false}), 'fooCamelCase');
-	t.is(slugify('fooCamelCase', {decamelize: false}), 'foocamelcase-2');
-	t.is(slugify('_foo'), 'foo-5');
-	t.is(slugify('_foo', {preserveLeadingUnderscore: true}), '_foo');
-	t.is(slugify('_foo', {preserveLeadingUnderscore: true}), '_foo-2');
+	const cases = [
+		['foo', 'foo'],
+		['foo', 'foo-2'],
+		['foo 1', 'foo-1'],
+		['foo-1', 'foo-1-2'],
+		['foo-1', 'foo-1-3'],
+		['foo', 'foo-3'],
+		['foo', 'foo-4'],
+		['foo-1', 'foo-1-4'],
+		['foo-2', 'foo-2-1'],
+		['foo-2', 'foo-2-2'],
+		['foo-2-1', 'foo-2-1-1'],
+		['foo-2-1', 'foo-2-1-2'],
+		['foo-11', 'foo-11-1'],
+		['foo-111', 'foo-111-1'],
+		['foo-111-1', 'foo-111-1-1'],
+		['fooCamelCase', {lowercase: false, decamelize: false}, 'fooCamelCase'],
+		['fooCamelCase', {decamelize: false}, 'foocamelcase-2'],
+		['_foo', 'foo-5'],
+		['_foo', {preserveLeadingUnderscore: true}, '_foo'],
+		['_foo', {preserveLeadingUnderscore: true}, '_foo-2'],
+	];
+
+	runCounterTests(t, slugifyCounter, cases);
 
 	const slugify2 = slugifyWithCounter();
 	t.is(slugify2('foo'), 'foo');
 	t.is(slugify2('foo'), 'foo-2');
-
 	t.is(slugify2(''), '');
 	t.is(slugify2(''), '');
 });
 
 test('preserve characters', t => {
-	t.is(slugify('foo#bar', {preserveCharacters: []}), 'foo-bar');
-	t.is(slugify('foo.bar', {preserveCharacters: []}), 'foo-bar');
-	t.is(slugify('foo?bar ', {preserveCharacters: ['#']}), 'foo-bar');
-	t.is(slugify('foo#bar', {preserveCharacters: ['#']}), 'foo#bar');
-	t.is(slugify('foo_bar#baz', {preserveCharacters: ['#']}), 'foo-bar#baz');
-	t.is(slugify('foo.bar#baz-quux', {preserveCharacters: ['.', '#']}), 'foo.bar#baz-quux');
-	t.is(slugify('foo.bar#baz-quux', {separator: '.', preserveCharacters: ['-']}), 'foo.bar.baz-quux');
+	const cases = [
+		['foo#bar', [], 'foo-bar'],
+		['foo.bar', [], 'foo-bar'],
+		['foo?bar ', ['#'], 'foo-bar'],
+		['foo#bar', ['#'], 'foo#bar'],
+		['foo_bar#baz', ['#'], 'foo-bar#baz'],
+		['foo.bar#baz-quux', ['.', '#'], 'foo.bar#baz-quux'],
+		['foo.bar#baz-quux', {separator: '.', preserveCharacters: ['-']}, 'foo.bar.baz-quux'],
+	];
+
+	runCustomReplacementsTests(t, cases);
+
 	t.throws(() => {
 		slugify('foo', {separator: '-', preserveCharacters: ['-']});
 	});
@@ -203,3 +254,4 @@ test('preserve characters', t => {
 		slugify('foo', {separator: '.', preserveCharacters: ['.']});
 	});
 });
+```
