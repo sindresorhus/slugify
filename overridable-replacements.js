@@ -1,9 +1,8 @@
-```js
 // overridable-replacements.js
 
 class Replacements {
     constructor() {
-        this.replacements = {};
+        this.replacements = Object.create(null);
     }
 
     add(key, value) {
@@ -11,13 +10,17 @@ class Replacements {
     }
 
     get(key) {
-        return this.replacements[key] || null;
+        return key in this.replacements ? this.replacements[key] : null;
     }
 
     remove(key) {
-        if (this.replacements.hasOwnProperty(key)) {
+        if (this.has(key)) {
             delete this.replacements[key];
         }
+    }
+
+    has(key) {
+        return Object.prototype.hasOwnProperty.call(this.replacements, key);
     }
 
     replace(text) {
@@ -28,9 +31,8 @@ class Replacements {
     }
 
     clear() {
-        this.replacements = {};
+        this.replacements = Object.create(null);
     }
 }
 
 export default Replacements;
-```
