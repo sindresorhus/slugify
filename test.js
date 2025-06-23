@@ -22,11 +22,11 @@ const runCustomReplacementsTests = (t, cases) => {
 
 const runLowercaseOptionTests = (t, cases) => {
 	cases.forEach(([input, separator, lowercase, expected]) => {
+		const options = { lowercase };
 		if (separator) {
-			t.is(slugify(input, {separator, lowercase}), expected);
-		} else {
-			t.is(slugify(input, {lowercase}), expected);
+			options.separator = separator;
 		}
+		t.is(slugify(input, options), expected);
 	});
 };
 
