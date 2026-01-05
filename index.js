@@ -1,3 +1,4 @@
+
 import escapeStringRegexp from 'escape-string-regexp';
 import transliterate from '@sindresorhus/transliterate';
 import builtinOverridableReplacements from './overridable-replacements.js';
@@ -105,6 +106,8 @@ export default function slugify(string, options) {
 	if (shouldAppendDash) {
 		string = `${string}-`;
 	}
+	// Collapse multiple separators into one
+	string = string.replace(new RegExp(`${options.separator}{2,}`, 'g'), options.separator);
 
 	return string;
 }
