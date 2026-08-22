@@ -191,6 +191,30 @@ export type Options = {
 	```
 	*/
 	readonly transliterate?: boolean;
+
+	/**
+	Truncate the slug to a maximum length, in characters.
+
+	Must be a positive integer. When the slug is longer than `maxLength`, it is cut back to the last `separator` boundary at or before the limit so words are not split. If there is no such boundary (for example, a single long word or an empty `separator`), the slug is hard-cut to exactly `maxLength` characters.
+
+	When omitted, the slug is not truncated.
+
+	@default undefined
+
+	@example
+	```
+	import slugify from '@sindresorhus/slugify';
+
+	// Word-boundary case: cut back to the last separator before the limit.
+	slugify('The quick brown fox', {maxLength: 12});
+	//=> 'the-quick'
+
+	// Edge case: a single long word has no boundary, so it is hard-cut.
+	slugify('supercalifragilistic', {maxLength: 5});
+	//=> 'super'
+	```
+	*/
+	readonly maxLength?: number;
 };
 
 /**

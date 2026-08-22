@@ -242,6 +242,27 @@ slugify('Déjà Vu', {transliterate: false});
 //=> 'déjà-vu'
 ```
 
+##### maxLength
+
+Type: `number`\
+Default: `undefined`
+
+Truncate the slug to a maximum length, in characters.
+
+Must be a positive integer. When the slug is longer than `maxLength`, it is cut back to the last `separator` boundary at or before the limit so words are not split. If there is no such boundary (for example, a single long word or an empty `separator`), the slug is hard-cut to exactly `maxLength` characters.
+
+When omitted, the slug is not truncated.
+
+```js
+import slugify from '@sindresorhus/slugify';
+
+slugify('The quick brown fox', {maxLength: 12});
+//=> 'the-quick'
+
+slugify('supercalifragilistic', {maxLength: 5});
+//=> 'super'
+```
+
 ### slugifyWithCounter()
 
 Returns a new instance of `slugify(string, options?)` with a counter to handle multiple occurrences of the same string.
