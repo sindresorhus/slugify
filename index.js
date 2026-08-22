@@ -20,6 +20,22 @@ const removeMootSeparators = (string, separator) => {
 		.replaceAll(new RegExp(`^(?:${escapedSeparator})|(?:${escapedSeparator})$`, 'g'), '');
 };
 
+const truncate = (slug, maxLength, separator) => {
+	if (slug.length <= maxLength) {
+		return slug;
+	}
+
+	if (separator) {
+		// Rightmost separator boundary starting at or before the limit.
+		const boundaryIndex = slug.lastIndexOf(separator, maxLength);
+		if (boundaryIndex > 0) {
+			return slug.slice(0, boundaryIndex);
+		}
+	}
+
+	return slug.slice(0, maxLength);
+};
+
 const buildPatternSlug = options => {
 	let negationSetPattern = String.raw`a-z\d`;
 	negationSetPattern += options.lowercase ? '' : 'A-Z';
@@ -59,6 +75,10 @@ export default function slugify(string, options) {
 		transliterate: true,
 		...options,
 	};
+
+	if (options.maxLength !== undefined && (!Number.isInteger(options.maxLength) || options.maxLength <= 0)) {
+		throw new TypeError(`Expected \`maxLength\` to be a positive integer, got \`${options.maxLength}\``);
+	}
 
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 	const shouldAppendDash = options.preserveTrailingDash && string.endsWith('-');
@@ -106,6 +126,10 @@ export default function slugify(string, options) {
 		string = `${string}-`;
 	}
 
+	if (options.maxLength !== undefined) {
+		string = truncate(string, options.maxLength, options.separator);
+	}
+
 	return string;
 }
 
@@ -113,6 +137,10 @@ export function slugifyWithCounter() {
 	const occurrences = new Map();
 
 	const countable = (string, options) => {
+		// Pass all options (including `maxLength`) through to `slugify()` so the
+		// base slug is capped *before* the `-<counter>` suffix is appended below.
+		// The suffix is intentionally preserved even if it pushes the total past
+		// `maxLength`, so deduplication is never silently dropped by truncation.
 		string = slugify(string, options);
 
 		if (!string) {

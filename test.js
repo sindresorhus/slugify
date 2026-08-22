@@ -200,6 +200,44 @@ test('counter', t => {
 	t.is(slugify2(''), '');
 });
 
+test('maxLength - throws TypeError for invalid values', t => {
+	// Semantic 1: zero, negative, non-integer number, and non-number all throw.
+	t.throws(() => slugify('foo bar', {maxLength: 0}), {instanceOf: TypeError});
+	t.throws(() => slugify('foo bar', {maxLength: -5}), {instanceOf: TypeError});
+	t.throws(() => slugify('foo bar', {maxLength: 3.5}), {instanceOf: TypeError});
+	t.throws(() => slugify('foo bar', {maxLength: '5'}), {instanceOf: TypeError});
+});
+
+test('maxLength - no-op when already short enough', t => {
+	// Semantic 2: a slug already <= maxLength is returned unchanged.
+	t.is(slugify('foo bar', {maxLength: 20}), 'foo-bar');
+	t.is(slugify('foo bar', {maxLength: 7}), 'foo-bar');
+	t.is(slugify('foo', {maxLength: 3}), 'foo');
+});
+
+test('maxLength - word-boundary truncation with no trailing separator', t => {
+	// Semantic 3: prefer the rightmost separator boundary at or before the limit.
+	t.is(slugify('foo bar baz', {maxLength: 9}), 'foo-bar');
+});
+
+test('maxLength - single-run / empty-separator hard-cut fallback', t => {
+	// Semantic 4: no separator boundary at or before the limit => hard-cut.
+	t.is(slugify('foobarbaz', {maxLength: 3}), 'foo');
+	t.is(slugify('foo bar baz', {separator: '', maxLength: 3}), 'foo');
+});
+
+test('maxLength - interaction with lowercase: false', t => {
+	// Case is preserved; truncation still lands on a word boundary.
+	t.is(slugify('Foo Bar Baz', {lowercase: false, maxLength: 9}), 'Foo-Bar');
+});
+
+test('maxLength - slugifyWithCounter caps base slug before counter suffix', t => {
+	// Semantic 6: maxLength applies to the base slug; the counter suffix follows.
+	const slugify = slugifyWithCounter();
+	t.is(slugify('foo bar baz', {maxLength: 9}), 'foo-bar');
+	t.is(slugify('foo bar baz', {maxLength: 9}), 'foo-bar-2');
+});
+
 test('preserve characters', t => {
 	t.is(slugify('foo#bar', {preserveCharacters: []}), 'foo-bar');
 	t.is(slugify('foo.bar', {preserveCharacters: []}), 'foo-bar');
