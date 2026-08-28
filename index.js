@@ -4,13 +4,13 @@ import builtinOverridableReplacements from './overridable-replacements.js';
 
 const decamelize = string => string
 	// Separate capitalized words.
-	.replaceAll(/([A-Z]{2,})(\d+)/g, '$1 $2')
-	.replaceAll(/([a-z\d]+)([A-Z]{2,})/g, '$1 $2')
-
+	// Each pattern captures the least leading context it needs, as a greedy quantifier there causes quadratic backtracking on long runs of the same character class.
+	// `FOO360` → `FOO 360`
+	.replaceAll(/([A-Z]{2})(\d+)/g, '$1 $2')
+	// `foo360BAR` → `foo360 BAR`, `fooBar` → `foo Bar`
 	.replaceAll(/([a-z\d])([A-Z])/g, '$1 $2')
-	// `[a-rt-z]` matches all lowercase characters except `s`.
-	// This avoids matching plural acronyms like `APIs`.
-	.replaceAll(/([A-Z]+)([A-Z][a-rt-z\d]+)/g, '$1 $2');
+	// `APISection` → `API Section`. A lowercase `s` right after the acronym is a plural marker rather than the start of a new word, unless another lowercase letter follows it, so `APIs` is left alone while `APIUsage` is still separated.
+	.replaceAll(/([A-Z])([A-Z](?!s(?![a-z]))[a-z\d]+)/g, '$1 $2');
 
 const removeMootSeparators = (string, separator) => {
 	const escapedSeparator = escapeStringRegexp(separator);
@@ -87,9 +87,8 @@ export default function slugify(string, options) {
 		string = options.locale ? string.toLocaleLowerCase(options.locale) : string.toLowerCase();
 	}
 
-	// Detect contractions/possessives by looking for any word followed by a `'t` or `'s`
-	// in isolation and then remove it. Handles both straight and curly apostrophes.
-	string = string.replaceAll(/([a-zA-Z\d]+)['\u2019]([ts])(\s|$)/g, '$1$2$3');
+	// Drop the apostrophe from contractions and possessives so that `Conway's Law` becomes `conways-law` rather than `conway-s-law`. Only a word-final `'t` or `'s` qualifies, and both straight and curly apostrophes are handled.
+	string = string.replaceAll(/([a-zA-Z\d])['\u2019]([ts])(\s|$)/g, '$1$2$3');
 
 	string = string.replace(patternSlug, options.separator);
 	string = string.replaceAll('\\', '');

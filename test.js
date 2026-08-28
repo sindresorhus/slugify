@@ -24,9 +24,31 @@ test('main', t => {
 	t.is(slugify('foo360BAR'), 'foo360-bar');
 	t.is(slugify('FOO360'), 'foo-360');
 	t.is(slugify('FOOBar'), 'foo-bar');
-	t.is(slugify('APIs'), 'apis');
+});
+
+test('decamelize acronyms', t => {
 	t.is(slugify('APISection'), 'api-section');
+	// The word after the acronym has `s` as its second letter, which used to prevent the split.
+	t.is(slugify('HTMLEscape'), 'html-escape');
+	t.is(slugify('XMLMsgBox'), 'xml-msg-box');
+	// The minimum two-character acronym splits from a following capitalized word.
+	t.is(slugify('IDValue'), 'id-value');
+	// The minimum uppercase run also splits from a numeric suffix.
+	t.is(slugify('ID2'), 'id-2');
+	// Acronyms split correctly when preceded by a lowercase word.
+	t.is(slugify('parseXMLDocument'), 'parse-xml-document');
+	// Multiple acronym-to-word boundaries are handled in the same identifier.
+	t.is(slugify('XMLHttpAPIResponse'), 'xml-http-api-response');
+	// Numeric acronym suffixes compose with a following capitalized word.
+	t.is(slugify('HTML5Parser'), 'html-5-parser');
+
+	// A plural acronym stays intact.
+	t.is(slugify('APIs'), 'apis');
 	t.is(slugify('Util APIs'), 'util-apis');
+	t.is(slugify('APIsAndMore'), 'apis-and-more');
+	t.is(slugify('APIs2'), 'apis2');
+	// A plural acronym remains intact between camel-cased words.
+	t.is(slugify('getAPIsNow'), 'get-apis-now');
 });
 
 test('possessives and contractions', t => {
