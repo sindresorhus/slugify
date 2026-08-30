@@ -87,8 +87,12 @@ export default function slugify(string, options) {
 		string = options.locale ? string.toLocaleLowerCase(options.locale) : string.toLowerCase();
 	}
 
-	// Drop the apostrophe from contractions and possessives so that `Conway's Law` becomes `conways-law` rather than `conway-s-law`. Only a word-final `'t` or `'s` qualifies, and both straight and curly apostrophes are handled.
-	string = string.replaceAll(/([a-zA-Z\d])['\u2019]([ts])(\s|$)/g, '$1$2$3');
+	// Drop the apostrophe from contractions and possessives so that `Conway's Law` becomes `conways-law` rather than `conway-s-law`. Only a word-final `'t` or `'s` qualifies, so `foo'sbar` is left alone, and both straight and curly apostrophes are handled. What counts as a word character has to be what survives into the slug, so it widens to Unicode alongside `buildPatternSlug` when transliteration is disabled. The `i` flag covers `DON'T` when the `lowercase` option is disabled.
+	const contractionPattern = options.transliterate
+		? /([a-z\d])['\u2019]([ts])(?![a-z\d])/gi
+		: /([\p{L}\p{N}])['\u2019]([ts])(?![\p{L}\p{N}])/giu;
+
+	string = string.replaceAll(contractionPattern, '$1$2');
 
 	string = string.replace(patternSlug, options.separator);
 	string = string.replaceAll('\\', '');

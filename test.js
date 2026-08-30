@@ -63,6 +63,46 @@ test('possessives and contractions', t => {
 	t.is(slugify('Sindre\u2019s app'), 'sindres-app');
 	t.is(slugify('can\u2019t stop'), 'cant-stop');
 	t.is(slugify('won\u2019t work'), 'wont-work');
+
+	// Punctuation after the contraction must not stop it from being collapsed.
+	t.is(slugify('Don\'t!'), 'dont');
+	t.is(slugify('Conway\'s, revisited'), 'conways-revisited');
+	t.is(slugify('it\'s, then'), 'its-then');
+	t.is(slugify('can\'t-stop'), 'cant-stop');
+	t.is(slugify('it\'s...'), 'its');
+	t.is(slugify('Don\u2019t!'), 'dont');
+	t.is(slugify('(it\'s)'), 'its');
+	t.is(slugify('He said \u201Cit\'s\u201D'), 'he-said-its');
+	t.is(slugify('user\'s_id'), 'users-id');
+
+	// Several contractions in the same string.
+	t.is(slugify('It\'s, Bob\'s, and Sue\'s.'), 'its-bobs-and-sues');
+
+	// A digit before the apostrophe counts as the word.
+	t.is(slugify('1990\'s, 2000\'s'), '1990s-2000s');
+
+	// Not a contraction when a letter or digit follows.
+	t.is(slugify('foo\'sbar'), 'foo-sbar');
+	t.is(slugify('it\'s2'), 'it-s2');
+
+	// An apostrophe that does not end a `'s`/`'t` word is untouched.
+	t.is(slugify('\'tis the season'), 'tis-the-season');
+	t.is(slugify('rock \'n\' roll'), 'rock-n-roll');
+
+	// Works with the other options.
+	t.is(slugify('Don\'t! stop', {separator: '_'}), 'dont_stop');
+	t.is(slugify('Don\'t! stop', {separator: ''}), 'dontstop');
+	t.is(slugify('Don\'t Stop, Please', {lowercase: false}), 'Dont-Stop-Please');
+	// An uppercase contraction is collapsed too when `lowercase` is disabled.
+	t.is(slugify('DON\'T STOP!', {lowercase: false}), 'DONT-STOP');
+	t.is(slugify('IT\'S, THEN', {lowercase: false}), 'ITS-THEN');
+	// Unicode letters kept by `transliterate: false` count as part of the word on both sides of the apostrophe.
+	t.is(slugify('Don\u2019t!', {transliterate: false}), 'dont');
+	t.is(slugify('Déjà\u2019s vu', {transliterate: false}), 'déjàs-vu');
+	t.is(slugify('foo\'sé', {transliterate: false}), 'foo-sé');
+	// A character transliteration drops cannot be part of the word, so the contraction still ends there.
+	t.is(slugify('Sindre\'s日記'), 'sindres');
+	t.is(slugify('Sindre\'s日記', {transliterate: false}), 'sindre-s日記');
 });
 
 test('custom separator', t => {
@@ -230,6 +270,11 @@ test('preserve characters', t => {
 	t.is(slugify('foo_bar#baz', {preserveCharacters: ['#']}), 'foo-bar#baz');
 	t.is(slugify('foo.bar#baz-quux', {preserveCharacters: ['.', '#']}), 'foo.bar#baz-quux');
 	t.is(slugify('foo.bar#baz-quux', {separator: '.', preserveCharacters: ['-']}), 'foo.bar.baz-quux');
+
+	// Contraction collapsing runs first, so a word-final `'s`/`'t` apostrophe is dropped even when `'` is preserved.
+	t.is(slugify('it\'s!', {preserveCharacters: ['\'']}), 'its');
+	t.is(slugify('rock \'n\' roll', {preserveCharacters: ['\'']}), 'rock-\'n\'-roll');
+
 	t.throws(() => {
 		slugify('foo', {separator: '-', preserveCharacters: ['-']});
 	});

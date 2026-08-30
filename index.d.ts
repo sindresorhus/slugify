@@ -138,6 +138,8 @@ export type Options = {
 
 	It cannot contain the `separator`.
 
+	The apostrophe in a word-final `'s` or `'t` is still dropped, even if you preserve `'`.
+
 	For example, if you want to slugify URLs, but preserve the HTML fragment `#` character, you could set `preserveCharacters: ['#']`.
 
 	@default []
@@ -210,6 +212,9 @@ slugify('  Déjà Vu!  ');
 
 slugify('fooBar 123 $#%');
 //=> 'foo-bar-123'
+
+slugify('Conway’s Law');
+//=> 'conways-law'
 
 slugify('я люблю единорогов');
 //=> 'ya-lyublyu-edinorogov'
