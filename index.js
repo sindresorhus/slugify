@@ -20,6 +20,17 @@ const removeMootSeparators = (string, separator) => {
 		.replaceAll(new RegExp(`^(?:${escapedSeparator})|(?:${escapedSeparator})$`, 'g'), '');
 };
 
+// Strip the trailing counter groups from a slug, so `foo-1-2` becomes `foo`. This is done with a split rather than a `(?:-\d+)+$` regex, as that pattern is unanchored and so retries at every `-` in the string, which is quadratic on input such as `-1-1-1…-1a`.
+const removeCounterSuffix = string => {
+	const parts = string.split('-');
+
+	while (parts.length > 1 && /^\d+$/.test(parts.at(-1))) {
+		parts.pop();
+	}
+
+	return parts.join('-');
+};
+
 const buildPatternSlug = options => {
 	let negationSetPattern = String.raw`a-z\d`;
 	negationSetPattern += options.lowercase ? '' : 'A-Z';
@@ -123,7 +134,7 @@ export function slugifyWithCounter() {
 		}
 
 		const stringLower = string.toLowerCase();
-		const numberless = occurrences.get(stringLower.replace(/(?:-\d+?)+?$/, '')) || 0;
+		const numberless = occurrences.get(removeCounterSuffix(stringLower)) || 0;
 		const counter = occurrences.get(stringLower);
 		occurrences.set(stringLower, typeof counter === 'number' ? counter + 1 : 1);
 		const newCounter = occurrences.get(stringLower) || 2;

@@ -322,3 +322,14 @@ test('transliterate option disabled', t => {
 	t.is(slugify('Déjà Vu'), 'deja-vu');
 	t.is(slugify('foo & bar'), 'foo-and-bar');
 });
+
+test('slugifyWithCounter() is not vulnerable to ReDoS', t => {
+	const slugify = slugifyWithCounter();
+
+	// Stripping the trailing counter used to backtrack quadratically on a long run of `-<digits>` groups that ends in a non-digit. This input took over 30 seconds; the threshold is generous so that it only trips on that blowup.
+	const start = performance.now();
+	slugify(`${'-1'.repeat(50_000)}a`);
+	const duration = performance.now() - start;
+
+	t.true(duration < 5000, `Took ${duration.toFixed(0)}ms`);
+});
