@@ -262,6 +262,36 @@ test('counter', t => {
 	t.is(slugify2(''), '');
 });
 
+test('slugifyWithCounter() never returns the same slug twice', t => {
+	// A slug produced by appending a counter to one input can collide with the plain slug of a different input, as the counter is keyed on the incoming slug only.
+	const slugify = slugifyWithCounter();
+	t.is(slugify('foo'), 'foo');
+	t.is(slugify('foo'), 'foo-2');
+	t.is(slugify('foo 2'), 'foo-2-2');
+
+	slugify.reset();
+
+	// The same collision in the other order.
+	t.is(slugify('foo'), 'foo');
+	t.is(slugify('foo 2'), 'foo-2');
+	t.is(slugify('foo'), 'foo-3');
+
+	slugify.reset();
+
+	// The bump has to keep going while the next candidate is also taken.
+	t.is(slugify('bar'), 'bar');
+	t.is(slugify('bar 2'), 'bar-2');
+	t.is(slugify('bar 3'), 'bar-3');
+	t.is(slugify('bar'), 'bar-4');
+
+	slugify.reset();
+
+	// The collision check is case-insensitive, matching the counter itself.
+	t.is(slugify('baz'), 'baz');
+	t.is(slugify('BAZ 2', {lowercase: false}), 'BAZ-2');
+	t.is(slugify('baz'), 'baz-3');
+});
+
 test('preserve characters', t => {
 	t.is(slugify('foo#bar', {preserveCharacters: []}), 'foo-bar');
 	t.is(slugify('foo.bar', {preserveCharacters: []}), 'foo-bar');
