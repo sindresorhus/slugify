@@ -125,6 +125,7 @@ export default function slugify(string, options) {
 
 export function slugifyWithCounter() {
 	const occurrences = new Map();
+	const returned = new Set();
 
 	const countable = (string, options) => {
 		string = slugify(string, options);
@@ -137,16 +138,24 @@ export function slugifyWithCounter() {
 		const numberless = occurrences.get(removeCounterSuffix(stringLower)) || 0;
 		const counter = occurrences.get(stringLower);
 		occurrences.set(stringLower, typeof counter === 'number' ? counter + 1 : 1);
-		const newCounter = occurrences.get(stringLower) || 2;
-		if (newCounter >= 2 || numberless > 2) {
-			string = `${string}-${newCounter}`;
+		let newCounter = occurrences.get(stringLower) || 2;
+		let result = newCounter >= 2 || numberless > 2 ? `${string}-${newCounter}` : string;
+
+		// The counter is keyed on the incoming slug, so it cannot see a slug that was previously handed out by appending a counter to a *different* input. Without this loop, `foo`, `foo`, `foo 2` would return `foo-2` twice. Keep bumping the counter until the result is one that has not been returned before.
+		while (returned.has(result.toLowerCase())) {
+			newCounter += 1;
+			occurrences.set(stringLower, newCounter);
+			result = `${string}-${newCounter}`;
 		}
 
-		return string;
+		returned.add(result.toLowerCase());
+
+		return result;
 	};
 
 	countable.reset = () => {
 		occurrences.clear();
+		returned.clear();
 	};
 
 	return countable;
