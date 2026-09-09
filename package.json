@@ -1,6 +1,6 @@
 {
 	"name": "@sindresorhus/slugify",
-	"version": "3.0.1",
+	"version": "3.0.2",
 	"description": "Slugify a string",
 	"license": "MIT",
 	"repository": "sindresorhus/slugify",
