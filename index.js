@@ -36,9 +36,9 @@ const buildPatternSlug = options => {
 	let negationSetPattern = String.raw`a-z\d`;
 	negationSetPattern += options.lowercase ? '' : 'A-Z';
 
-	// When transliteration is disabled, preserve Unicode characters
+	// When transliteration is disabled, preserve Unicode characters, including combining marks
 	if (options.transliterate === false) {
-		negationSetPattern += String.raw`\p{L}\p{N}`;
+		negationSetPattern += String.raw`\p{L}\p{M}\p{N}`;
 	}
 
 	for (const character of options.preserveCharacters) {
@@ -102,7 +102,7 @@ export default function slugify(string, options) {
 	// Drop the apostrophe from contractions and possessives so that `Conway's Law` becomes `conways-law` rather than `conway-s-law`. Only a word-final `'t` or `'s` qualifies, so `foo'sbar` is left alone, and both straight and curly apostrophes are handled. What counts as a word character has to be what survives into the slug, so it widens to Unicode alongside `buildPatternSlug` when transliteration is disabled. The `i` flag covers `DON'T` when the `lowercase` option is disabled.
 	const contractionPattern = options.transliterate
 		? /(?<word>[\da-z])['\u{2019}](?<ending>[st])(?![\da-z])/giv
-		: /(?<word>[\p{Letter}\p{Number}])['\u{2019}](?<ending>[st])(?![\p{Letter}\p{Number}])/giv;
+		: /(?<word>[\p{Letter}\p{Mark}\p{Number}])['\u{2019}](?<ending>[st])(?![\p{Letter}\p{Mark}\p{Number}])/giv;
 
 	string = string.replaceAll(contractionPattern, '$<word>$<ending>');
 

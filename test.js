@@ -347,6 +347,12 @@ test('transliterate option disabled', () => {
 	assert.equal(slugify('你好世界', {transliterate: false}), '你好世界');
 	assert.equal(slugify('مرحبا', {transliterate: false}), 'مرحبا');
 
+	// Combining marks are preserved with their base letters
+	assert.equal(slugify('हिन्दी', {transliterate: false}), 'हिन्दी');
+	assert.equal(slugify('नमस्ते दुनिया', {transliterate: false}), 'नमस्ते-दुनिया');
+	assert.equal(slugify('Café au lait', {transliterate: false}), 'café-au-lait');
+	assert.equal(slugify('Café\'s menu', {transliterate: false}), 'cafés-menu');
+
 	// Custom replacements should still work when transliterate is disabled
 	assert.equal(slugify('foo & bar', {transliterate: false, customReplacements: [['&', ' and ']]}), 'foo-and-bar');
 
