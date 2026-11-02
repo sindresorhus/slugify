@@ -313,6 +313,12 @@ test('preserve characters', () => {
 	assert.equal(slugify('it\'s!', {preserveCharacters: ['\'']}), 'its');
 	assert.equal(slugify('rock \'n\' roll', {preserveCharacters: ['\'']}), 'rock-\'n\'-roll');
 
+	// Characters that are only special in a `v`-mode character class work without transliteration too
+	assert.equal(slugify('foo/bar baz', {transliterate: false, preserveCharacters: ['/']}), 'foo/bar-baz');
+	assert.equal(slugify('foo&&bar', {transliterate: false, preserveCharacters: ['&', '&']}), 'foo&&bar');
+	assert.equal(slugify('foo#!~bar', {transliterate: false, preserveCharacters: ['#', '#', '!', '~']}), 'foo#!~bar');
+	assert.equal(slugify('foo.-|bar', {transliterate: false, preserveCharacters: ['.', '-', '|'], separator: '_'}), 'foo.-|bar');
+
 	assert.throws(() => {
 		slugify('foo', {separator: '-', preserveCharacters: ['-']});
 	}, /cannot be included in preserved characters/v);

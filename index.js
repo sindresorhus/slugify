@@ -49,7 +49,8 @@ const buildPatternSlug = options => {
 		negationSetPattern += escapeStringRegexp(character);
 	}
 
-	const flags = options.transliterate ? 'g' : 'gv';
+	// Not `v`, as `escapeStringRegexp` does not escape characters that a `v`-mode character class requires escaped, like `/` and `&&`. The `u` flag is enough for `\p{…}`.
+	const flags = options.transliterate ? 'g' : 'gu';
 	return new RegExp(`[^${negationSetPattern}]+`, flags);
 };
 
