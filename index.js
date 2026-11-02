@@ -51,7 +51,9 @@ const buildPatternSlug = options => {
 
 	// Not `v`, as `escapeStringRegexp` does not escape characters that a `v`-mode character class requires escaped, like `/` and `&&`. The `u` flag is enough for `\p{…}`.
 	const flags = options.transliterate ? 'g' : 'gu';
-	return new RegExp(`[^${negationSetPattern}]+`, flags);
+	// Discard combining marks with a removed character so emoji do not leave orphaned variation selectors.
+	const combiningMarksPattern = options.transliterate ? '' : String.raw`\p{M}*`;
+	return new RegExp(`(?:[^${negationSetPattern}]${combiningMarksPattern})+`, flags);
 };
 
 export default function slugify(string, options) {

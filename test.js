@@ -402,6 +402,18 @@ test('transliterate option disabled', () => {
 	assert.equal(slugify('foo & bar'), 'foo-and-bar');
 });
 
+test('discarded emoji do not leave combining marks behind', () => {
+	assert.equal(slugify('☀️', {transliterate: false}), '');
+	assert.equal(slugify('Hello ❤️ world', {transliterate: false}), 'hello-world');
+	assert.equal(slugify('✈️ Flights', {transliterate: false}), 'flights');
+	assert.equal(slugify('Café ☕️', {transliterate: false}), 'café');
+	assert.equal(slugify('☀️', {transliterate: false, preserveCharacters: ['☀']}), '☀️');
+
+	const countingSlugify = slugifyWithCounter();
+	assert.equal(countingSlugify('☀️', {transliterate: false}), '');
+	assert.equal(countingSlugify('✈️', {transliterate: false}), '');
+});
+
 test('slugifyWithCounter() is not vulnerable to ReDoS', () => {
 	const countingSlugify = slugifyWithCounter();
 
