@@ -110,7 +110,6 @@ export default function slugify(string, options) {
 
 	// The replacement is a function so a separator containing `$` is inserted literally instead of being read as a replacement pattern.
 	string = string.replace(patternSlug, () => options.separator);
-	string = string.replaceAll('\\', '');
 
 	if (options.separator) {
 		string = removeMootSeparators(string, options.separator);

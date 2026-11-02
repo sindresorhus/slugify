@@ -118,6 +118,12 @@ test('custom separator', () => {
 	assert.equal(slugify('a____b', {separator: '__'}), 'a__b');
 	assert.equal(slugify('__a__b__', {separator: '__'}), 'a__b');
 	assert.equal(slugify('foo---bar', {separator: '---'}), 'foo---bar');
+
+	// A backslash is kept when it is the separator or a preserved character, and removed otherwise
+	assert.equal(slugify('foo bar', {separator: '\\'}), String.raw`foo\bar`);
+	assert.equal(slugify(String.raw`foo\bar baz`, {preserveCharacters: ['\\']}), String.raw`foo\bar-baz`);
+	assert.equal(slugify(String.raw`foo\bar baz`, {transliterate: false, preserveCharacters: ['\\']}), String.raw`foo\bar-baz`);
+	assert.equal(slugify(String.raw`foo\bar`), 'foo-bar');
 });
 
 test('a separator containing `$` is inserted literally', () => {
