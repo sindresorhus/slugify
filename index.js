@@ -96,7 +96,8 @@ export default function slugify(string, options) {
 	const patternSlug = buildPatternSlug(options);
 
 	if (options.lowercase) {
-		string = options.locale ? string.toLocaleLowerCase(options.locale) : string.toLowerCase();
+		// The locale is only used without transliteration, as a transliterated string is ASCII and locale-aware lowercasing could make it non-ASCII again, like `I` to `ı` for Turkish.
+		string = options.locale && !options.transliterate ? string.toLocaleLowerCase(options.locale) : string.toLowerCase();
 	}
 
 	// Drop the apostrophe from contractions and possessives so that `Conway's Law` becomes `conways-law` rather than `conway-s-law`. Only a word-final `'t` or `'s` qualifies, so `foo'sbar` is left alone, and both straight and curly apostrophes are handled. What counts as a word character has to be what survives into the slug, so it widens to Unicode alongside `buildPatternSlug` when transliteration is disabled. The `i` flag covers `DON'T` when the `lowercase` option is disabled.

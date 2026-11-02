@@ -333,6 +333,15 @@ test('locale option', () => {
 	// Note: Some locales may have complex behavior with transliteration
 	assert.equal(slugify('TEST', {locale: 'tr'}), 'test'); // Basic test
 	assert.equal(slugify('TEST'), 'test'); // Default behavior same for basic ASCII
+
+	// The transliterated `I` must not be lowercased to the non-ASCII dotless `ı`, which would then be dropped
+	assert.equal(slugify('ISTANBUL', {locale: 'tr'}), 'istanbul');
+	assert.equal(slugify('İstanbul', {locale: 'tr'}), 'istanbul');
+	assert.equal(slugify('BAKI', {locale: 'az'}), 'baki');
+
+	// Without transliteration, the locale is used for lowercasing
+	assert.equal(slugify('ISTANBUL', {locale: 'tr', transliterate: false}), 'ıstanbul');
+	assert.equal(slugify('İstanbul', {locale: 'tr', transliterate: false}), 'istanbul');
 });
 
 test('transliterate option disabled', () => {
