@@ -126,6 +126,20 @@ test('custom separator', () => {
 	assert.equal(slugify(String.raw`foo\bar`), 'foo-bar');
 });
 
+test('options set to `undefined` use the defaults', () => {
+	assert.equal(slugify('Déjà Vu fooBar', {
+		separator: undefined,
+		lowercase: undefined,
+		decamelize: undefined,
+		customReplacements: undefined,
+		preserveLeadingUnderscore: undefined,
+		preserveTrailingDash: undefined,
+		preserveCharacters: undefined,
+		transliterate: undefined,
+		locale: undefined,
+	}), 'deja-vu-foo-bar');
+});
+
 test('a separator containing `$` is inserted literally', () => {
 	// A separator is a plain string, not a replacement pattern, so `$&`, `$$` and `` $` `` must not be expanded.
 	assert.equal(slugify('foo bar', {separator: '$&'}), 'foo$&bar');

@@ -68,7 +68,8 @@ export default function slugify(string, options) {
 		preserveTrailingDash: false,
 		preserveCharacters: [],
 		transliterate: true,
-		...options,
+		// An option set to `undefined` uses the default.
+		...Object.fromEntries(Object.entries(options ?? {}).filter(([, value]) => value !== undefined)),
 	};
 
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
