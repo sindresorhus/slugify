@@ -2,15 +2,32 @@ import escapeStringRegexp from 'escape-string-regexp';
 import transliterate from '@sindresorhus/transliterate';
 import builtinOverridableReplacements from './overridable-replacements.js';
 
+// A combining mark belongs to the character before it, so each letter or digit is matched together with its marks. This keeps decomposed (NFD) text in one piece. Titlecase letters (`ǅ`, `ᾼ`) count as uppercase.
+const uppercase = String.raw`[\p{Titlecase_Letter}\p{Uppercase_Letter}]\p{Mark}*`;
+const lowercaseOrDigit = String.raw`[\p{Decimal_Number}\p{Lowercase_Letter}]\p{Mark}*`;
+
+// Each pattern captures the least leading context it needs, as a greedy quantifier there causes quadratic backtracking on long runs of the same character class.
+const separateAcronymFromDigits = new RegExp(String.raw`(?<acronym>(?:${uppercase}){2})(?<digits>\p{Decimal_Number}+)`, 'gv');
+const separateWordFromUppercase = new RegExp(`(?<word>${lowercaseOrDigit})(?<uppercase>${uppercase})`, 'gv');
+const separateAcronymFromWord = new RegExp(String.raw`(?<acronymHead>${uppercase})(?<rest>${uppercase}(?!s(?!\p{Mark}*\p{Lowercase_Letter}))(?:${lowercaseOrDigit})+)`, 'gv');
+
 const decamelize = string => string
 	// Separate capitalized words.
-	// Each pattern captures the least leading context it needs, as a greedy quantifier there causes quadratic backtracking on long runs of the same character class.
 	// `FOO360` → `FOO 360`
-	.replaceAll(/(?<acronym>[A-Z]{2})(?<digits>\d+)/gv, '$<acronym> $<digits>')
+	.replaceAll(separateAcronymFromDigits, '$<acronym> $<digits>')
 	// `foo360BAR` → `foo360 BAR`, `fooBar` → `foo Bar`
-	.replaceAll(/(?<word>[\da-z])(?<uppercase>[A-Z])/gv, '$<word> $<uppercase>')
+	.replaceAll(separateWordFromUppercase, '$<word> $<uppercase>')
 	// `APISection` → `API Section`. A lowercase `s` right after the acronym is a plural marker rather than the start of a new word, unless another lowercase letter follows it, so `APIs` is left alone while `APIUsage` is still separated.
-	.replaceAll(/(?<acronymHead>[A-Z])(?<rest>[A-Z](?!s(?![a-z]))[\da-z]+)/gv, '$<acronymHead> $<rest>');
+	.replaceAll(separateAcronymFromWord, '$<acronymHead> $<rest>');
+
+const normalize = string => {
+	// Match transliterate's guard, as long combining-mark sequences can make native normalization take quadratic time.
+	if (/\p{Mark}{101}/v.test(string)) {
+		throw new RangeError('Cannot normalize more than 100 consecutive combining marks');
+	}
+
+	return string.normalize();
+};
 
 const removeMootSeparators = (string, separator) => {
 	const escapedSeparator = escapeStringRegexp(separator);
@@ -77,24 +94,36 @@ export default function slugify(string, options) {
 	const shouldPrependUnderscore = options.preserveLeadingUnderscore && string.startsWith('_');
 	const shouldAppendDash = options.preserveTrailingDash && string.endsWith('-');
 
+	let {customReplacements} = options;
 	if (options.transliterate) {
-		const customReplacements = new Map([
+		customReplacements = Array.from(new Map([
 			...builtinOverridableReplacements,
-			...options.customReplacements,
-		]);
+			...customReplacements,
+		]), ([key, value]) => [normalize(key), value]).toSorted((a, b) => b[0].length - a[0].length);
 
-		string = transliterate(string, {customReplacements, locale: options.locale});
-	} else {
-		// Apply custom replacements even when transliteration is disabled
-		for (const [key, value] of options.customReplacements) {
-			// A replacement value keeps `replaceAll`'s replacement-pattern semantics here, so that this branch agrees with the transliterating one, where `@sindresorhus/transliterate` applies the same replacements the same way. Escaping `$` would make the two branches disagree.
-			// eslint-disable-next-line unicorn/no-unsafe-string-replacement
-			string = string.replaceAll(key, value);
-		}
+		// Preserve transliterate's canonical key matching and longest-key-first replacement order.
+		string = normalize(string);
 	}
 
+	// Apply custom replacements before decamelization, even when transliteration is disabled.
+	for (const [key, value] of customReplacements) {
+		// A replacement value keeps `replaceAll`'s replacement-pattern semantics, matching how `@sindresorhus/transliterate` applies the same replacements. Escaping `$` would change that behavior.
+		// eslint-disable-next-line unicorn/no-unsafe-string-replacement
+		string = string.replaceAll(key, value);
+	}
+
+	if (options.transliterate) {
+		// Custom replacement values can be in any normalization form.
+		string = normalize(string);
+	}
+
+	// Decamelization runs after custom replacements and before transliteration, as transliteration expands one character to several with a lower-case part (`Ü` → `Ue`), which would otherwise read as a camel-case boundary inside an upper-case word.
 	if (options.decamelize) {
 		string = decamelize(string);
+	}
+
+	if (options.transliterate) {
+		string = transliterate(string, {locale: options.locale});
 	}
 
 	const patternSlug = buildPatternSlug(options);

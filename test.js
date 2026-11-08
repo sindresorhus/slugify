@@ -185,6 +185,208 @@ test('custom replacements', () => {
 	}), 'zuerich');
 });
 
+test('custom replacements match normalized text before decamelization', () => {
+	assert.equal(slugify('Cafe\u{301}Bar', {
+		customReplacements: [['CaféBar', 'done']],
+	}), 'done');
+	assert.equal(slugify('CaféBar', {
+		customReplacements: [['Cafe\u{301}Bar', 'done']],
+	}), 'done');
+});
+
+test('custom replacements retain their ordering', () => {
+	const customReplacements = [['foo', 'first'], ['fooBar', 'second']];
+	assert.equal(slugify('fooBar', {customReplacements}), 'second');
+	assert.equal(slugify('fooBar', {customReplacements, transliterate: false}), 'first-bar');
+});
+
+test('normalization rejects excessive combining marks before applying replacements', () => {
+	const string = `a${'\u{301}'.repeat(101)}`;
+	assert.throws(() => slugify(string), RangeError);
+	assert.throws(() => slugify('foo', {customReplacements: [[string, 'bar']]}), RangeError);
+});
+
+for (const transliterate of [true, false]) {
+	test(`custom replacement keys match before decamelization (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('fooBar', {
+			transliterate,
+			customReplacements: [['fooBar', 'baz']],
+		}), 'baz');
+	});
+
+	test(`custom replacement values are decamelized (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('foo@bar', {
+			transliterate,
+			customReplacements: [['@', 'HelloWorld']],
+		}), 'foo-hello-worldbar');
+		assert.equal(slugify('@', {
+			transliterate,
+			customReplacements: [['@', 'MÜNCHEN']],
+		}), transliterate ? 'muenchen' : 'münchen');
+	});
+
+	test(`removing text can expose a camel-case boundary (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('foo@Bar', {
+			transliterate,
+			customReplacements: [['@', '']],
+		}), 'foo-bar');
+	});
+
+	test(`equal-length replacements can consume an earlier replacement value (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('@', {
+			transliterate,
+			customReplacements: [['@', '#'], ['#', 'HelloWorld']],
+		}), 'hello-world');
+	});
+
+	test(`replacement values are not passed through the same replacements again (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('foo', {
+			transliterate,
+			customReplacements: [['foo', 'fooBar']],
+		}), 'foo-bar');
+	});
+
+	test(`custom replacements retain matched-text replacement patterns (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('foo', {
+			transliterate,
+			customReplacements: [['foo', '$&Bar']],
+		}), 'foo-bar');
+	});
+
+	test(`custom replacements retain literal-dollar replacement patterns (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('@', {
+			transliterate,
+			preserveCharacters: ['$'],
+			customReplacements: [['@', '$$HelloWorld']],
+		}), '$hello-world');
+	});
+
+	test(`replacement values respect disabled decamelization (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('@', {
+			transliterate,
+			decamelize: false,
+			lowercase: false,
+			customReplacements: [['@', 'HelloWorld']],
+		}), 'HelloWorld');
+	});
+}
+
+test('custom replacement keys remain case-sensitive', () => {
+	const options = {customReplacements: [['fooBar', 'done']]};
+	assert.equal(slugify('fooBar foobar FooBar', options), 'done-foobar-foo-bar');
+});
+
+test('custom replacement keys are literal strings', () => {
+	assert.equal(slugify('foo.Bar fooXBar', {
+		customReplacements: [['foo.Bar', 'done']],
+	}), 'done-foo-x-bar');
+});
+
+test('the last duplicate replacement overrides earlier values with transliteration', () => {
+	const customReplacements = [['fooBar', 'first'], ['fooBar', 'last']];
+	assert.equal(slugify('fooBar', {customReplacements}), 'last');
+	assert.equal(slugify('fooBar', {customReplacements, transliterate: false}), 'first');
+});
+
+test('replacement ordering uses normalized key lengths', () => {
+	assert.equal(slugify('éxValue', {
+		customReplacements: [['e\u{301}', 'short'], ['éx', 'long']],
+	}), 'long-value');
+});
+
+test('camel-case replacements can override built-in replacements', () => {
+	assert.equal(slugify('& 🦄', {
+		customReplacements: [['&', 'RockAndRoll']],
+	}), 'rock-and-roll-unicorn');
+});
+
+test('a built-in replacement can be disabled with an empty value', () => {
+	assert.equal(slugify('foo&Bar', {
+		customReplacements: [['&', '']],
+	}), 'foo-bar');
+});
+
+test('replacement values retain casing when lowercasing is disabled', () => {
+	assert.equal(slugify('@', {
+		lowercase: false,
+		customReplacements: [['@', 'HelloWorld']],
+	}), 'Hello-World');
+});
+
+test('replacement word boundaries use the configured separator', () => {
+	assert.equal(slugify('foo@bar', {
+		separator: '__',
+		customReplacements: [['@', ' HelloWorld ']],
+	}), 'foo__hello__world__bar');
+});
+
+test('preserved characters in replacement values survive decamelization', () => {
+	assert.equal(slugify('@', {
+		preserveCharacters: ['#'],
+		customReplacements: [['@', 'HelloWorld#Topic']],
+	}), 'hello-world#topic');
+});
+
+test('edge preservation still uses the original input with replacements', () => {
+	assert.equal(slugify('_@-', {
+		preserveLeadingUnderscore: true,
+		preserveTrailingDash: true,
+		customReplacements: [['@', 'HelloWorld']],
+	}), '_hello-world-');
+	assert.equal(slugify('@', {
+		preserveLeadingUnderscore: true,
+		preserveTrailingDash: true,
+		customReplacements: [['@', '_HelloWorld-']],
+	}), 'hello-world');
+});
+
+test('replacement values are transliterated with the selected locale', () => {
+	const customReplacements = [['@', 'RäksmörgåsMenu']];
+	assert.equal(slugify('@', {customReplacements, locale: 'sv'}), 'raksmorgas-menu');
+	assert.equal(slugify('@', {customReplacements, locale: 'de'}), 'raeksmoergas-menu');
+});
+
+test('decomposed replacement values keep their camel-case boundaries', () => {
+	const customReplacements = [['@', 'Cafe\u{301}Über']];
+	assert.equal(slugify('@', {customReplacements}), 'cafe-ueber');
+	assert.equal(slugify('@', {customReplacements, transliterate: false}), 'cafe\u{301}-über');
+});
+
+test('custom replacement keys match literally without transliteration', () => {
+	assert.equal(slugify('Café', {
+		transliterate: false,
+		customReplacements: [['Cafe\u{301}', 'done']],
+	}), 'café');
+});
+
+test('custom replacement arrays are not mutated', () => {
+	const customReplacements = Object.freeze([
+		Object.freeze(['@', 'Cafe\u{301}Name']),
+		Object.freeze(['longerKey', 'value']),
+	]);
+	const original = structuredClone(customReplacements);
+	assert.equal(slugify('@', {customReplacements}), 'cafe-name');
+	assert.deepEqual(customReplacements, original);
+});
+
+test('replacement values cannot bypass the normalization mark limit', () => {
+	assert.throws(() => slugify('@', {
+		customReplacements: [['@', `a${'\u{301}'.repeat(101)}`]],
+	}), RangeError);
+});
+
+test('normalization accepts the maximum supported mark run', () => {
+	const string = `a${'\u{301}'.repeat(100)}`;
+	assert.equal(slugify(string, {customReplacements: [[string, 'done']]}), 'done');
+});
+
+test('replacement results share the counter with equivalent direct input', () => {
+	const countingSlugify = slugifyWithCounter();
+	assert.equal(countingSlugify('@', {customReplacements: [['@', 'MÜNCHEN']]}), 'muenchen');
+	assert.equal(countingSlugify('München'), 'muenchen-2');
+	assert.equal(countingSlugify('muenchen 2'), 'muenchen-2-2');
+});
+
 test('lowercase option', () => {
 	assert.equal(slugify('foo bar', {lowercase: false}), 'foo-bar');
 	assert.equal(slugify('BAR&baz', {lowercase: false}), 'BAR-and-baz');
@@ -201,6 +403,81 @@ test('decamelize option', () => {
 
 test('supports German umlauts', () => {
 	assert.equal(slugify('ä ö ü Ä Ö Ü ß', {lowercase: false, separator: ' '}), 'ae oe ue Ae Oe Ue ss');
+});
+
+test('transliteration does not create false camel-case boundaries', () => {
+	// Transliteration expands a character to several (`Ü` → `Ue`), and the lower-case part must not be read as the start of a new word.
+	assert.equal(slugify('MÜNCHEN'), 'muenchen');
+	assert.equal(slugify('ÜBER UNS'), 'ueber-uns');
+	assert.equal(slugify('GRÜNE ÄPFEL'), 'gruene-aepfel');
+	assert.equal(slugify('DIE GRÖSSTE'), 'die-groesste');
+	assert.equal(slugify('Ægir'), 'aegir');
+
+	// A real camel-case boundary next to a non-ASCII character is still found.
+	assert.equal(slugify('fooÜber'), 'foo-ueber');
+	assert.equal(slugify('ÜberUns'), 'ueber-uns');
+	// Decomposed (NFD) text keeps its camel-case boundary even though a combining mark sits between the two characters.
+	assert.equal(slugify('foo\u{301}Bar'), 'foo-bar');
+	assert.equal(slugify('Cafe\u{301}Über'), 'cafe-ueber');
+	// A combining mark does not split an upper-case letter from its word.
+	assert.equal(slugify('MÜNCHEN'.normalize('NFD')), 'muenchen');
+	assert.equal(slugify('МОЙ'.normalize('NFD')), 'moy');
+});
+
+test('uppercase ligatures and sharp s do not create word boundaries', () => {
+	assert.equal(slugify('ÆSIR'), 'aesir');
+	assert.equal(slugify('ŒUVRE'), 'oeuvre');
+	assert.equal(slugify('STRAẞE'), 'strasse');
+});
+
+test('transliteration preserves casing without splitting uppercase words', () => {
+	assert.equal(slugify('MÜNCHEN', {lowercase: false}), 'MUeNCHEN');
+	assert.equal(slugify('Ægir', {lowercase: false}), 'AEgir');
+});
+
+test('Unicode acronyms split from capitalized words and numeric suffixes', () => {
+	assert.equal(slugify('ÖPNVTicket'), 'oepnv-ticket');
+	assert.equal(slugify('ÖPNV24Ticket'), 'oepnv-24-ticket');
+	assert.equal(slugify('ÖPNV24Ticket', {transliterate: false}), 'öpnv-24-ticket');
+});
+
+test('Unicode plural acronyms stay intact before a following word', () => {
+	assert.equal(slugify('ÖPNVsAndMore'), 'oepnvs-and-more');
+	assert.equal(slugify('O\u{308}PNVsAndMore', {transliterate: false}), 'o\u{308}pnvs-and-more');
+});
+
+test('Cyrillic camel-case and acronym boundaries use the original letters', () => {
+	assert.equal(slugify('мойПроект'), 'moy-proekt');
+	assert.equal(slugify('МОЙПроект'), 'moy-proekt');
+	assert.equal(slugify('МОЙПроект', {transliterate: false}), 'мой-проект');
+});
+
+test('titlecase letters form camel-case boundaries', () => {
+	assert.equal(slugify('fooǅak'), 'foo-dzak');
+	assert.equal(slugify('fooǅak', {transliterate: false}), 'foo-ǆak');
+	assert.equal(slugify('fooǅak', {transliterate: false, lowercase: false}), 'foo-ǅak');
+});
+
+test('decomposed lowercase letters keep all marks before an uppercase boundary', () => {
+	assert.equal(slugify('a\u{323}\u{301}Bar', {transliterate: false}), 'a\u{323}\u{301}-bar');
+});
+
+test('decomposed uppercase letters stay with their acronym', () => {
+	assert.equal(slugify('A\u{301}B\u{308}Cdef', {transliterate: false}), 'a\u{301}b\u{308}-cdef');
+});
+
+test('decomposed acronyms split from digits and following words', () => {
+	assert.equal(slugify('A\u{301}B\u{308}12Cat', {transliterate: false}), 'a\u{301}b\u{308}-12-cat');
+});
+
+test('non-ASCII decimal digits participate in camel-case boundaries', () => {
+	assert.equal(slugify('ABC٢Parser', {transliterate: false}), 'abc-٢-parser');
+	assert.equal(slugify('foo٢Bar', {transliterate: false}), 'foo٢-bar');
+});
+
+test('disabling decamelization keeps Unicode identifiers intact', () => {
+	assert.equal(slugify('fooÜber', {decamelize: false}), 'fooueber');
+	assert.equal(slugify('ÖPNV24Ticket', {decamelize: false, transliterate: false}), 'öpnv24ticket');
 });
 
 test('supports Vietnamese', () => {
@@ -396,6 +673,9 @@ test('transliterate option disabled', () => {
 
 	// Mixed ASCII and non-ASCII
 	assert.equal(slugify('Hello Déjà Vu', {transliterate: false}), 'hello-déjà-vu');
+
+	// Camel-case boundaries are found for non-ASCII letters too
+	assert.equal(slugify('fooÜber', {transliterate: false}), 'foo-über');
 
 	// Ensure transliterate: true still works normally (default behavior)
 	assert.equal(slugify('Déjà Vu'), 'deja-vu');

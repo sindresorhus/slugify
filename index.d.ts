@@ -57,7 +57,7 @@ export type Options = {
 	/**
 	Add your own custom replacements.
 
-	The replacements are run on the original string before any other transformations.
+	The replacements are run on the original string before decamelization and transliteration.
 
 	This only overrides a default replacement if you set an item with the same key, like `&`.
 
