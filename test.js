@@ -624,6 +624,46 @@ test('preserve characters', () => {
 	}, /cannot be included in preserved characters/v);
 });
 
+for (const transliterate of [true, false]) {
+	test(`preserving an emoji does not preserve halves of other emoji (transliterate: ${transliterate})`, () => {
+		const options = {transliterate, preserveCharacters: ['😀']};
+		assert.equal(slugify('😁', options), '');
+		assert.equal(slugify('😀', options), '😀');
+		assert.equal(slugify('😀 😁', options), '😀');
+		assert.equal(encodeURIComponent(slugify('foo😀😁bar', options)), 'foo%F0%9F%98%80-bar');
+	});
+
+	test(`leading underscore preservation does not duplicate preserved characters (transliterate: ${transliterate})`, () => {
+		const options = {transliterate, preserveCharacters: ['_'], preserveLeadingUnderscore: true};
+		assert.equal(slugify('_foo', options), '_foo');
+		assert.equal(slugify('__foo', options), '__foo');
+		assert.equal(slugify('_', options), '_');
+	});
+
+	test(`trailing dash preservation does not duplicate preserved characters (transliterate: ${transliterate})`, () => {
+		const options = {
+			transliterate,
+			separator: '_',
+			preserveCharacters: ['-'],
+			preserveTrailingDash: true,
+		};
+		assert.equal(slugify('foo-', options), 'foo-');
+		assert.equal(slugify('foo--', options), 'foo--');
+		assert.equal(slugify('-', options), '-');
+	});
+
+	test(`edge preservation restores characters removed by custom replacements (transliterate: ${transliterate})`, () => {
+		assert.equal(slugify('_foo-', {
+			transliterate,
+			separator: '.',
+			preserveCharacters: ['_', '-'],
+			preserveLeadingUnderscore: true,
+			preserveTrailingDash: true,
+			customReplacements: [['_', ''], ['-', '']],
+		}), '_foo-');
+	});
+}
+
 test('locale option', () => {
 	// Locale-specific transliteration
 	assert.equal(slugify('Räksmörgås'), 'raeksmoergas');

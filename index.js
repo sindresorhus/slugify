@@ -66,11 +66,11 @@ const buildPatternSlug = options => {
 		negationSetPattern += escapeStringRegexp(character);
 	}
 
-	// Not `v`, as `escapeStringRegexp` does not escape characters that a `v`-mode character class requires escaped, like `/` and `&&`. The `u` flag is enough for `\p{…}`.
-	const flags = options.transliterate ? 'g' : 'gu';
+	// Not `v`, as `escapeStringRegexp` does not escape characters that a `v`-mode character class requires escaped, like `/` and `&&`. The `u` flag handles Unicode property escapes and keeps preserved characters like emoji intact.
 	// Discard combining marks with a removed character so emoji do not leave orphaned variation selectors.
 	const combiningMarksPattern = options.transliterate ? '' : String.raw`\p{M}*`;
-	return new RegExp(`(?:[^${negationSetPattern}]${combiningMarksPattern})+`, flags);
+	// eslint-disable-next-line require-unicode-regexp
+	return new RegExp(`(?:[^${negationSetPattern}]${combiningMarksPattern})+`, 'gu');
 };
 
 export default function slugify(string, options) {
@@ -147,11 +147,11 @@ export default function slugify(string, options) {
 		string = removeMootSeparators(string, options.separator);
 	}
 
-	if (shouldPrependUnderscore) {
+	if (shouldPrependUnderscore && !string.startsWith('_')) {
 		string = `_${string}`;
 	}
 
-	if (shouldAppendDash) {
+	if (shouldAppendDash && !string.endsWith('-')) {
 		string += '-';
 	}
 
